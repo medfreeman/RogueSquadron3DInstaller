@@ -44,7 +44,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Test with non-english versions
 - Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !
 - Perhaps add single core affinity fix, known to avoid a camera bug, although seems to affect only D3D mode
-- Integrate Wine settings directly inside the installer, hassle free configuration on linux !
+- Integrate Wine settings directly inside the installer, hassle free configuration on linux ! -- Managed windows Off, Decorated windows Off, Grab mouse cursor on (not sure this one is really needed), Strict draw ordering enabled (needed to avoid menu graphic scrambling), Win98 compatibility mode (for joystick support)
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it !
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 
