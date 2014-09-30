@@ -5,6 +5,7 @@ RogueSquadron3DInstaller
 Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), developed by [Factor 5](http://www.factor5.de/)
 
 *for Windows (All 32 and 64 bit versions from XP) and Wine*
+
 tested on Windows 7 Ultimate x64, Wine 1.7.26 and 1.7.27, with Intel graphics HD4000, and Nvidia Geforce 620m
 
 This software is freeware. It is neither supported nor endorsed by LucasArts. Use at your own risk! Original CD required.
