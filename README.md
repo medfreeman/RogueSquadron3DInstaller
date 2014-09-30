@@ -53,10 +53,10 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Instructions
 
-- Download one of the versions of the installer :
+- Download one of the two versions of the installer :
   * RS3DInstaller-0.9_nglide_102.exe is a bit laggy, but has no crash at the end of missions
   * RS3DInstaller-0.9_nglide_103.exe is smoother, but you need to relaunch the game after every mission
-- Insert original cdromhttp://www.markusegger.at/Software/Games/Rogue/Instructions.html
+- Insert original cdrom
 - Run the new installer
 - Play the game !
 
