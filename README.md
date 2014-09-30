@@ -71,8 +71,8 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - [Lutris](https://lutris.net/)
 - [SweetFX](http://forums.guru3d.com/showthread.php?t=381912)
 - [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
-- [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
   * https://github.com/dpethes/rerogue
+- [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
 
 ## Disclaimer
 
