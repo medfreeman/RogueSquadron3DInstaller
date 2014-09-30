@@ -34,7 +34,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Sets needed compatibility flags on the executable for newer Windows (Win98 compatibility for joysticks, Administrator mode although i'm not sure last one is really needed, need testing)
 - Detects wine (to disable directx installation and unsupported file copying method, and later automatically set needed wine settings)
 - Asks to run graphic settings at the end of setup
-- '/nocdprompt' command line switch to avoid asking two times for the cdrom when already asked before (i.e in playonlinux or lutris)
+- '/nocdprompt' command line switch to avoid asking two times for the cdrom when already asked before (i.e in [PlayOnLinux](http://www.playonlinux.com/) or [Lutris](https://lutris.net/))
 
 ## Plans / Issues
 
