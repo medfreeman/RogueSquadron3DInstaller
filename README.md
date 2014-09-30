@@ -15,8 +15,11 @@ Made with [nsis](http://nsis.sourceforge.net) 3.0b0
 ## Goal
 
 The goal is to make a 'definitive' version of the game, to allow playing without hassles on recent computers.
+
 Since the original installer is a 16bit executable, it won't run on 64bit Windows, and Wine on recent linux kernels (>= 3.14) by default.
+
 It has also known issues with recent graphic cards.
+
 Since it needs a few compatibility fixes and additions, i feel it is simpler to bundle all the requirements into one package.
 
 ## Features
