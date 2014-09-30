@@ -1,7 +1,7 @@
 RogueSquadron3DInstaller
 ========================
 
-Star Wars : Rogue Squadron 3D unofficial installer
+**Star Wars : Rogue Squadron 3D** unofficial installer
 
 Game published in 1998 by [LucasArts](www.starwars.com/games-apps), developed by [Factor 5](http://www.factor5.de/)
 
