@@ -15,12 +15,21 @@ Made with [nsis](http://nsis.sourceforge.net) 3.0b0
 
 ## Goal
 
+The goal is to make a 'definitive' version of the game, to allow playing without hassles on recent computers.
+Since the original installer is a 16bit executable, it won't run on 64bit Windows, and Wine on recent linux kernels (>= 3.14) by default.
+It has also known issues with recent graphic cards.
+Since it needs a few compatibility fixes and additions, i feel it is simpler to bundle all the requirements into one package.
+
 ## Features
 
 - Independent installer : needs the original cd, but can be run from anywhere, no need to burn a modified cdrom
 - Contains update 1.21
+- Detects game version to avoid unecessary updates
 - Installs DirectX 9.0c
 - Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080)
+- Patches the game to fix the Direct3D mission crash bug. The game is known to crash at the end of missions in D3D mode (albeit of limited use since the game doesn't work with a lot of cards in D3D mode)
+- Sets needed compatibility flags for newer Windows (Win98 compatibility for joysticks, Administrator mode although i'm not sure last one is really needed, need testing)
+- Detects wine (to disable directx installation and unsupported file copying method)
 
 ## Instructions
 
