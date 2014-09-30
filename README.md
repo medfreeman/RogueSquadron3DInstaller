@@ -21,7 +21,6 @@ Made with [nsis](http://nsis.sourceforge.net) 3.0b0
 - Contains update 1.21
 - Installs DirectX 9.0c
 - Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080)
-- 
 
 ## Instructions
 
