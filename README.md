@@ -49,13 +49,14 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Minor issue : Video in menu doesn't play, i don't know if anything can be made on this one
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
+- Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
 
 ## Instructions
 
 - Download one of the versions of the installer :
   * RS3DInstaller-0.9_nglide_102.exe is a bit laggy, but has no crash at the end of missions
   * RS3DInstaller-0.9_nglide_103.exe is smoother, but you need to relaunch the game after every mission
-- Insert original cdrom
+- Insert original cdromhttp://www.markusegger.at/Software/Games/Rogue/Instructions.html
 - Run the new installer
 - Play the game !
 
@@ -63,11 +64,16 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 - [nGlide](http://www.zeus-software.com/downloads/nglide)
 - D3D Mission crash fix references
-  * 
-  * 
-- [PlayOnLinux]
-- [Lutris]
-- [SweetFX]
+  * http://forum.pj64-emu.com/archive/index.php/t-4168.html
+  * http://www.lucasforums.com/archive/index.php/t-171387.html
+- [Wine](https://www.winehq.org/)
+- [PlayOnLinux](http://www.playonlinux.com/)
+- [Lutris](https://lutris.net/)
+- [SweetFX](http://forums.guru3d.com/showthread.php?t=381912)
 - [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
+- [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
+  * https://github.com/dpethes/rerogue
 
 ## Disclaimer
+
+**Star Wars, Rogue Squadron (3D), LucasArts, Microsoft, Windows, Windows 7, Vista, XP, and all the entities mentioned in this readme are (C) and/or (TM) of their respective holders.**
