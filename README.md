@@ -28,13 +28,14 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Contains update 1.21
 - Detects game version to avoid unecessary updates
 - Installs DirectX 9.0c
-- Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080)
+- Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080). Automatically sets the renderer to glide.
 - Patches the game to fix the Direct3D mission crash bug. The game is known to crash at the end of missions in D3D mode (albeit of limited use since the game doesn't work with a lot of cards in D3D mode)
-- Sets needed compatibility flags for newer Windows (Win98 compatibility for joysticks, Administrator mode although i'm not sure last one is really needed, need testing)
-- Detects wine (to disable directx installation and unsupported file copying method)
-
-## Instructions
+- Sets needed compatibility flags on the executable for newer Windows (Win98 compatibility for joysticks, Administrator mode although i'm not sure last one is really needed, need testing)
+- Detects wine (to disable directx installation and unsupported file copying method, and later automatically set needed wine settings)
+- Asks to run graphic settings at the end of setup
 
 ## Plans / Issues
+
+## Instructions
 
 ## Links
