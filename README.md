@@ -38,13 +38,14 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Plans / Issues
 
-- Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.21 and 1.3.
-- Test with older verions, I'll need to find older cds since i have only 1.2 and 1.3 cds for now.
+- Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.21 and 1.3
+- Test with older verions, I'll need to find older cds since i have only 1.2 and 1.3 cds for now
+- Improve version detection. Useful for patches and fixes. For now it is made by parsing the readme file in the cd, and i already saw the formatting is not the same in the french 1.2 version cdrom
 - Test with non-english versions
 - Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !
+- Perhaps add single core affinity fix, known to avoid a camera bug, although seems to affect only D3D mode
 - Integrate Wine settings directly inside the installer, hassle free configuration on linux !
-- Improve version detection. Useful for patches and fixes. For now it is made by parsing the readme file in the cd, and i already saw the formatting is not the same in the french 1.2 version cdrom.
-- Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty( graphics for those who want it !
+- Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it !
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 
 ## Instructions
