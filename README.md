@@ -50,6 +50,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 - Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
+- Test on Mac (Wine)
 
 ## Instructions
 
@@ -76,4 +77,4 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Disclaimer
 
-**Star Wars, Rogue Squadron (3D), LucasArts, Microsoft, Windows, Windows 7, Vista, XP, and all the entities mentioned in this readme are (C) and/or (TM) of their respective holders.**
+**Star Wars, Rogue Squadron (3D), LucasArts, Microsoft, Windows, Windows 7, Vista, XP, and all the entities mentioned in this readme are © and/or ™ of their respective holders.**
