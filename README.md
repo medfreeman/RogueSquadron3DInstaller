@@ -37,6 +37,12 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Plans / Issues
 
+- Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.21 and 1.3.
+- Test with older verions, I'll need to find older cds since i have only 1.2 and 1.3 cds for now.
+- Test with non-english versions
+- Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Thanks to them for their amazing work !
+- Integrate Wine settings directly inside the installer, hassle free configuration on linux !
+
 ## Instructions
 
 ## Links
