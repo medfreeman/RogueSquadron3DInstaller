@@ -64,7 +64,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Links and thanks
 
 - [development PlayOnLinux Rogue scripts](https://github.com/medfreeman/playonlinux/tree/master/RogueSquadron3D/WIP)
-  * [Testing game page](http://www.playonlinux.com/fr/app-2277-Star_Wars__Rogue_Squadron_3D.html)
+  * [Testing game page](http://www.playonlinux.com/en/app-2277-Star_Wars__Rogue_Squadron_3D.html)
 - [nGlide](http://www.zeus-software.com/downloads/nglide)
 - [nsis](http://nsis.sourceforge.net)
 - D3D Mission crash fix references
