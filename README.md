@@ -63,17 +63,21 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Links and thanks
 
+- [development PlayOnLinux Rogue scripts](https://github.com/medfreeman/playonlinux/tree/master/RogueSquadron3D/WIP)
+  * [Testing game page](http://www.playonlinux.com/fr/app-2277-Star_Wars__Rogue_Squadron_3D.html)
+- [development Lutris Rogue scripts](https://github.com/medfreeman/lutris)
 - [nGlide](http://www.zeus-software.com/downloads/nglide)
 - [nsis](http://nsis.sourceforge.net)
 - D3D Mission crash fix references
   * http://forum.pj64-emu.com/archive/index.php/t-4168.html
   * http://www.lucasforums.com/archive/index.php/t-171387.html
 - [Wine](https://www.winehq.org/)
+  * [Wine game page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
 - [PlayOnLinux](http://www.playonlinux.com/)
 - [Lutris](https://lutris.net/)
 - [SweetFX](http://forums.guru3d.com/showthread.php?t=381912)
 - [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
-  * https://github.com/dpethes/rerogue
+  * [Tools](https://github.com/dpethes/rerogue)
 - [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
 
 ## Disclaimer
