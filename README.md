@@ -7,11 +7,15 @@ Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), devel
 
 *for Windows (All 32 and 64 bit versions from XP) and Wine*
 
-*tested on Windows 7 Ultimate x64, Wine 1.7.26 and 1.7.27, with Intel graphics HD4000, and Nvidia Geforce 620m*
+*tested on Windows 7 Ultimate x64, Ubuntu 14.04 Trusty x64, Debian Wheezy 7.6 x64 on Wine 1.7.26 and 1.7.27, with Intel graphics HD4000, Nvidia Geforce 620m, and Geforce GTX 660Ti*
 
 **This software is freeware. It is neither supported nor endorsed by LucasArts. Use at your own risk! Original CD required.**
 
 Made with [nsis](http://nsis.sourceforge.net) 3.0b0
+
+## Changelog
+
+See [changelog.txt](changelog.txt)
 
 ## Goal
 

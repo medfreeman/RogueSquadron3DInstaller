@@ -1,0 +1,12 @@
+0.91
+- Fixed 64 bit registry compatibility
+- Fixed force administrator mode and win98 compatibility flags in registry
+- Improved version detection
+- Don't create directory if exists
+- Allow unckecking DirectX
+- DirectX version detection and automatic uncheck
+- Allow unchecking nGlide
+- Check for existence of files and skip if inexistent in cdrom, to make it work with older game versions
+- Fixed some section descriptions
+- Fixed removal of program from program and features after uninstall
+- Detect if already installed, ask to uninstall first
