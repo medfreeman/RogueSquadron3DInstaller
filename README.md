@@ -59,24 +59,29 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Instructions
 
 - Download one of the two versions of the installer :
-  * RS3DInstaller-0.9_nglide_102.exe is a bit laggy, but has no crash at the end of missions
-  * RS3DInstaller-0.9_nglide_103.exe is smoother, but you need to relaunch the game after every mission
+  * [RS3DInstaller-0.9_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.9_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
+  * [RS3DInstaller-0.9_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.9_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
 - Insert original cdrom
 - Run the new installer
 - Play the game !
 
 ## Links and thanks
 
+- [development PlayOnLinux Rogue scripts](https://github.com/medfreeman/playonlinux/tree/master/RogueSquadron3D/WIP)
+  * [Testing game page](http://www.playonlinux.com/en/app-2277-Star_Wars__Rogue_Squadron_3D.html)
 - [nGlide](http://www.zeus-software.com/downloads/nglide)
+  * [Bug fix request thread](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729)
+- [nsis](http://nsis.sourceforge.net)
 - D3D Mission crash fix references
   * http://forum.pj64-emu.com/archive/index.php/t-4168.html
   * http://www.lucasforums.com/archive/index.php/t-171387.html
 - [Wine](https://www.winehq.org/)
+  * [Wine game page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
 - [PlayOnLinux](http://www.playonlinux.com/)
 - [Lutris](https://lutris.net/)
 - [SweetFX](http://forums.guru3d.com/showthread.php?t=381912)
 - [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
-  * https://github.com/dpethes/rerogue
+  * [Tools](https://github.com/dpethes/rerogue)
 - [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
 
 ## Disclaimer
