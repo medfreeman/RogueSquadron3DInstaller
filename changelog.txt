@@ -1,3 +1,15 @@
+0.92
+- Fixed nocdprompt command line switch
+- Fixed Wine file rights 
+- Fixed Wine D3D patch
+- nGlide version detection and automatic uncheck
+- Improved version detection
+- Corrected some section descriptions
+- Forbid changing directory in wine to simplify / force working playonlinux and lutris scripts
+- Removed help text about nGlide settings on finish page when nGlide installation has been disabled
+- Removed graphic settings option on finish page when nGlide installation has been disabled
+- Set default nglide settings to desktop resolution, 3dfx splashscreen off
+- Forced folder permissions on PlayerProfiles folder, so the game doesn't have to be run as administrator, even in Program Files
 0.91
 - Fixed 64 bit registry compatibility
 - Fixed force administrator mode and win98 compatibility flags in registry
