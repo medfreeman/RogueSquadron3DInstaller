@@ -49,7 +49,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !
 - ~~Perhaps add single core affinity fix to the game exe, known to avoid a camera bug, although seems to affect only D3D mode~~ that is false
 - ~~Integrate Wine settings directly inside the installer, hassle free configuration on linux ! -- Managed windows Off, Decorated windows Off, Grab mouse cursor on (not sure this one is really needed), Strict draw ordering enabled (needed to avoid menu graphic scrambling), Win98 compatibility mode (for joystick support)~~ This is good in scripts so we can see what is needed for the game, also can't include wine specific components
-- Correct a bug with Wine where the installer doesn't read properly hexadecimal values from the game executable, to be able to fix the mission crash correctly (although of limited use since useful only in D3D mode)
+- ~~Correct a bug with Wine where the installer doesn't read properly hexadecimal values from the game executable, to be able to fix the mission crash correctly (although of limited use since useful only in D3D mode)~~
 - Minor issue : Video in menu doesn't play, i don't know if anything can be made on this one
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
@@ -59,8 +59,8 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Instructions
 
 - Download one of the two versions of the installer :
-  * [RS3DInstaller-0.9_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.9_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
-  * [RS3DInstaller-0.9_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.9_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
+  * [RS3DInstaller-0.92_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.92_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
+  * [RS3DInstaller-0.92_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.92_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
 - Insert original cdrom
 - Run the new installer
 - Play the game !
