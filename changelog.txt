@@ -1,3 +1,9 @@
+0.93
+- Fixed registry keys deletion in game uninstaller
+- Removed compatibility mode from both launcher and game executable (it didn't achieve anything)
+- Added magic key handling to allow official game updater to work
+- Added default player profile n°4 - Luke (removes the joystick bug)
+- Removed the updater from the installer, now has to be downloaded
 0.92
 - Fixed nocdprompt command line switch
 - Fixed Wine file rights 
