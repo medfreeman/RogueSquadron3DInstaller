@@ -11,7 +11,7 @@ Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), devel
 
 **This software is freeware. It is neither supported nor endorsed by LucasArts. Use at your own risk! Original CD required.**
 
-Made with [nsis](http://nsis.sourceforge.net) 3.0b0
+Made with [nsis](http://nsis.sourceforge.net) 3.0b1
 
 ## Changelog
 
@@ -59,8 +59,8 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Instructions
 
 - Download one of the two versions of the installer :
-  * [RS3DInstaller-0.93_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.93_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
-  * [RS3DInstaller-0.93_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.93_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
+  * [RS3DInstaller-0.94_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.94_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
+  * [RS3DInstaller-0.94_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.94_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
 - Insert original cdrom
 - Run the new installer
 - Play the game !
