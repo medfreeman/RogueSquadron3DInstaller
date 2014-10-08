@@ -1,3 +1,6 @@
+﻿0.96
+- Added the 1.2 update back into the installer, as there's not really a reliable direct link anymore (gamefront link was down)
+- fixed a section description
 0.95
 - Made the player profile only copy on windows. On wine you need a fresh profile to make the joystick work
 0.94
