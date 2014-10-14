@@ -42,7 +42,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Plans / Issues
 
-- Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.21 and 1.3
+- Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.2 and 1.3
 - ~~Test with older versions, I'll need to find older cds since i have only 1.2 and 1.3 cds for now~~ That works now !
 - ~~Improve version detection. Not reliable for now. Useful for patches and fixes. For now it is made by parsing the readme file in the cd, and i already saw the formatting is not the same in the french 1.2 version cdrom. The game exe doesn't seem to have the correct version set in its headers, so i can't use this method. Perhaps a CRC on the executable / resources.~~ Seems good !
 - Test with non-english versions
