@@ -82,7 +82,13 @@ Requirements
 
     Written by [Afrow UK](http://www.afrowsoft.co.uk/)
     
-  *
+  * [NsisFile plug-in](http://nsis.sourceforge.net/NsisFile_plug-in) **[v.1.0](http://wiz0u.free.fr/prog/nsisFile/latest.php)**:
+
+    Written by [Wizou](http://nsis.sourceforge.net/User:Wizou)
+    
+  * [Advanced Uninstall Log NSIS Header](http://nsis.sourceforge.net/Advanced_Uninstall_Log_NSIS_Header) **[Download](http://nsis.sourceforge.net/mediawiki/images/1/12/Advunlog.zip)**:
+    
+    Written by [Red Wine](http://nsis.sourceforge.net/User:Red_Wine)
 
 ## Installation
 
