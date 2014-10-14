@@ -88,7 +88,12 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
     
     Written by [Red Wine](http://nsis.sourceforge.net/User:Red_Wine)
 
-    **This header needs a fix or an error will be triggered during compilation** : l.428 change ```!undef ID ${__LINE__}``` to ```!undef ID```
+    **This header needs a fix or an error will be triggered during compilation** : 
+    
+    l.428 change
+    ```!undef ID ${__LINE__}```
+    to
+    ```!undef ID```
 
   * [NSISdl translated header](http://forums.winamp.com/showthread.php?postid=1279800#18) **[2004-02-18](http://forums.winamp.com/attachment.php?attachmentid=24748&d=1077111624)**:
 
