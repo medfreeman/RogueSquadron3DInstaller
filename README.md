@@ -64,7 +64,7 @@ Requirements
 - NSIS 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
 
 - NSIS Plugins and Headers (also available in the nsis folder in this repository):
-  * [AccessControl plugin](http://nsis.sourceforge.net/AccessControl_plug-in) [v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip):
+  * [AccessControl plugin](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
 
     Written by [Mathias Hasselmann](http://taschenorakel.de/mathias/)
     
