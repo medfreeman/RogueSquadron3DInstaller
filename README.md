@@ -57,13 +57,11 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Test on Mac (Wine)
 - Make the menu video work (by properly configuring LucasArts SANM fourcc)
 
-## Compilation
-
-Requirements
+## Dependencies
 
 - NSIS 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
 
-- NSIS Plugins and Headers (also available in the nsis folder in this repository):
+- NSIS Plugins and Headers (also available in the nsis folder in this repository, merge the contents of this folder to nsis installation folder):
   * [AccessControl plug-in](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
 
     Written by [Mathias Hasselmann](http://taschenorakel.de/mathias/)
@@ -111,6 +109,12 @@ Requirements
       Lithuanian translation by Vytautas Krivickas
 
       Portuguese, Brazilian translation by "deguix"
+      
+## Compilation
+
+- Clone this repository or download and extract archive
+- Right-click on RS3DInstaller_nglide_102.nsi or RS3DInstaller_nglide_103.nsi, then click 'Compile in nsis'
+- Run the resulting executable, et voila !
 
 ## Installation
 
