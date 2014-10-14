@@ -30,7 +30,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Features
 
 - Independent installer : needs the original cd, but can be run from anywhere, no need to burn a modified cdrom
-- Contains update 1.21
+- Contains update 1.2
 - Detects game version to avoid unecessary updates
 - Installs DirectX 9.0c
 - Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080). Automatically sets the renderer to glide.
