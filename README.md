@@ -65,9 +65,13 @@ Requirements
 
 - NSIS Plugins and Headers (also available in the nsis folder in this repository):
   * [AccessControl plugin](http://nsis.sourceforge.net/AccessControl_plug-in) [v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip):
+
     Written by [Mathias Hasselmann](http://taschenorakel.de/mathias/)
+    
     NSIS-Unicode port by [Olivier Marcoux](http://wizou.fr/)
+    
     Major changes by [Afrow UK](http://www.afrowsoft.co.uk/)
+    
     Win95/WinNT4 support and bugfixes by [Anders](http://nsis.sourceforge.net/User:Anders)
 
 ## Installation
