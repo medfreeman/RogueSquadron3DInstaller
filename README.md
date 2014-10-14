@@ -90,7 +90,7 @@ Requirements
     
     Written by [Red Wine](http://nsis.sourceforge.net/User:Red_Wine)
 
-  * [NSISdl translated header](http://forums.winamp.com/showthread.php?postid=1279800#18) **[2014-02-18](http://forums.winamp.com/attachment.php?attachmentid=24748&d=1077111624)**:
+  * [NSISdl translated header](http://forums.winamp.com/showthread.php?postid=1279800#18) **[2004-02-18](http://forums.winamp.com/attachment.php?attachmentid=24748&d=1077111624)**:
 
     Written by deguix
 
