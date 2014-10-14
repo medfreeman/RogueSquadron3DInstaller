@@ -55,8 +55,11 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 - Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
 - Test on Mac (Wine)
+- Make the menu video work (by properly configuring LucasArts SANM fourcc)
 
-## Instructions
+## Compilation
+
+## Installation
 
 - Download one of the two versions of the installer :
   * [RS3DInstaller-0.96_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.96_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
