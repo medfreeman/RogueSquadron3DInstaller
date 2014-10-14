@@ -59,6 +59,11 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Compilation
 
+Requirements
+
+- [nsis](http://nsis.sourceforge.net) 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
+- 
+
 ## Installation
 
 - Download one of the two versions of the installer :
