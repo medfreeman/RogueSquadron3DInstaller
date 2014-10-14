@@ -64,7 +64,7 @@ Requirements
 - NSIS 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
 
 - NSIS Plugins and Headers (also available in the nsis folder in this repository):
-  * [AccessControl plugin](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
+  * [AccessControl plug-in](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
 
     Written by [Mathias Hasselmann](http://taschenorakel.de/mathias/)
     
@@ -73,6 +73,16 @@ Requirements
     Major changes by [Afrow UK](http://www.afrowsoft.co.uk/)
     
     Win95/WinNT4 support and bugfixes by [Anders](http://nsis.sourceforge.net/User:Anders)
+    
+  * [CDRom plug-in](http://nsis.sourceforge.net/CDRom_plug-in) **[v.1.0](http://nsis.sourceforge.net/mediawiki/images/5/50/Cdrom.zip)**:
+
+    Written by [Instructor](http://nsis.sourceforge.net/User:Instructor)
+    
+  * [nsArray plug-in](http://nsis.sourceforge.net/Arrays_in_NSIS) **[v.1.1.1.6](http://nsis.sourceforge.net/mediawiki/images/9/97/NsArray.zip)**:
+
+    Written by [Afrow UK](http://www.afrowsoft.co.uk/)
+    
+  *
 
 ## Installation
 
