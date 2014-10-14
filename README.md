@@ -62,6 +62,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 Requirements
 
 - [nsis](http://nsis.sourceforge.net) 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
+
 - 
 
 ## Installation
