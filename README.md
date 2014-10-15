@@ -56,7 +56,6 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - ~~Perhaps add single core affinity fix to the game exe, known to avoid a camera bug, although seems to affect only D3D mode~~ that is false
 - ~~Integrate Wine settings directly inside the installer, hassle free configuration on linux ! -- Managed windows Off, Decorated windows Off, Grab mouse cursor on (not sure this one is really needed), Strict draw ordering enabled (needed to avoid menu graphic scrambling), Win98 compatibility mode (for joystick support)~~ This is good in scripts so we can see what is needed for the game, also can't include wine specific components
 - ~~Correct a bug with Wine where the installer doesn't read properly hexadecimal values from the game executable, to be able to fix the mission crash correctly (although of limited use since useful only in D3D mode)~~
-- Minor issue : Video in menu doesn't play, i don't know if anything can be made on this one
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 - Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
