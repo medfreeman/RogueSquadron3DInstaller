@@ -13,6 +13,8 @@ Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), devel
 
 **You may only redistribute the original executables when done free of charge and all files are left intact (no additions, removals or alterations).**
 
+**The only goal of this installer is to provide a means to install and play this game on newer systems, in the context of video game history preservation, and not in any way to bypass the original copy protection (which it doesn't), or favor piracy**
+
 Made with [nsis](http://nsis.sourceforge.net) 3.0b1
 
 ## Changelog
