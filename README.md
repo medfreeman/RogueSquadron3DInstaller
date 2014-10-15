@@ -163,4 +163,4 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 **The file license/LICENSE.TXT is the original game license, and is property of LucasArts**
 
-**This installer source is available solely to prove that there's no intent to include malicious software inside this installer**
+**This installer source code is available solely to prove that there's no intent to include malicious software inside this installer**
