@@ -7,9 +7,11 @@ Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), devel
 
 *for Windows (All 32 and 64 bit versions from XP) and Wine*
 
-*tested on Windows 7 Ultimate x64, Ubuntu 14.04 Trusty x64, Debian Wheezy 7.6 x64 on Wine 1.7.26 and 1.7.27, with Intel graphics HD4000, Nvidia Geforce 620m, and Geforce GTX 660Ti*
+*tested on Windows 7 Ultimate x64, Ubuntu 14.04 Trusty x64, Debian Wheezy 7.6 x64 on Wine 1.7.26, 1.7.27 and 1.7.28, with Intel graphics HD4000, Nvidia Geforce 620m, and Geforce GTX 660Ti*
 
 **This software is freeware. It is neither supported nor endorsed by LucasArts. Use at your own risk! Original CD required.**
+
+**You may only redistribute the original executables when done free of charge and all files are left intact (no additions, removals or alterations).**
 
 Made with [nsis](http://nsis.sourceforge.net) 3.0b1
 
@@ -151,4 +153,14 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Disclaimer
 
-**Star Wars, Rogue Squadron (3D), LucasArts, Microsoft, Windows, Windows 7, Vista, XP, and all the entities mentioned in this readme are © and/or ™ of their respective holders.**
+**Star Wars, Rogue Squadron (3D), LucasArts, Microsoft, Windows, Windows 7, Vista, XP, DirectX and all the entities mentioned in this readme are ©, ® and/or ™ of their respective holders.**
+
+**The file gfx/icon/rogue.ico is the original rogue squadron 3D icon, © LucasArts**
+
+**The files gfx/header/rogue.bmp and gfx/welcome/rogue.bmp were made by myself, and contain Rogue Squadron 3D logo © LucasArts**
+
+**The file assets/update/rogueupd12.exe is the original rogue squadron 3D update v.1.2 © LucasArts**
+
+**The file license/LICENSE.TXT is the original game license, and is property of LucasArts**
+
+**This installer source is available solely to prove that there's no intent to include malicious software inside this installer**
