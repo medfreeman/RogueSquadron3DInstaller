@@ -124,7 +124,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Compilation
 
 - Clone this repository or download and extract archive
-- Right-click on RS3DInstaller_nglide_102.nsi or RS3DInstaller_nglide_103.nsi, then click 'Compile in nsis'
+- Right-click on RS3DInstaller_nglide_102.nsi or RS3DInstaller_nglide_103.nsi, then click 'Compile NSIS Script'
 - Run the resulting executable, et voila !
 
 ## Installation
