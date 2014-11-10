@@ -41,7 +41,6 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Installs DirectX 9.0c
 - Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080). Automatically sets the renderer to glide.
 - Patches the game to fix the Direct3D mission crash bug. The game is known to crash at the end of missions in D3D mode (albeit of limited use since the game doesn't work with a lot of cards in D3D mode)
-- ~~Sets needed compatibility flags on the executable for newer Windows (Win98 compatibility for joysticks, Administrator mode although i'm not sure last one is really needed, need testing)~~ Doesn't achieve anything
 - Detects Wine (to disable directx installation and unsupported file copying method, force path)
 - Asks to run graphic settings at the end of setup
 - '/nocdprompt' command line switch to avoid asking two times for the cdrom when already asked before (i.e in [PlayOnLinux](http://www.playonlinux.com/) or [Lutris](https://lutris.net/))
@@ -49,13 +48,8 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Plans / Issues
 
 - Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.2 and 1.3
-- ~~Test with older versions, I'll need to find older cds since i have only 1.2 and 1.3 cds for now~~ That works now !
-- ~~Improve version detection. Not reliable for now. Useful for patches and fixes. For now it is made by parsing the readme file in the cd, and i already saw the formatting is not the same in the french 1.2 version cdrom. The game exe doesn't seem to have the correct version set in its headers, so i can't use this method. Perhaps a CRC on the executable / resources.~~ Seems good !
 - Test with non-english versions
 - Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !
-- ~~Perhaps add single core affinity fix to the game exe, known to avoid a camera bug, although seems to affect only D3D mode~~ that is false
-- ~~Integrate Wine settings directly inside the installer, hassle free configuration on linux ! -- Managed windows Off, Decorated windows Off, Grab mouse cursor on (not sure this one is really needed), Strict draw ordering enabled (needed to avoid menu graphic scrambling), Win98 compatibility mode (for joystick support)~~ This is good in scripts so we can see what is needed for the game, also can't include wine specific components
-- ~~Correct a bug with Wine where the installer doesn't read properly hexadecimal values from the game executable, to be able to fix the mission crash correctly (although of limited use since useful only in D3D mode)~~
 - Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
 - Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
 - Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
