@@ -5,10 +5,12 @@
   LangString HEAD_SectionUpdate 			${LANG_English} "Update 1.2"
   LangString HEAD_SectionDirectX			${LANG_English} "DirectX 9.0c"
   LangString HEAD_SectionMissionCrashFix	${LANG_English} "Direct3D fix"
+  LangString HEAD_Section3DFXReg			${LANG_English} "3dfx registry settings"
   LangString DESC_SectionGameInstall		${LANG_English} "${APP_NAME} installation"
   LangString DESC_SectionUpdate 			${LANG_English} "Updates the game to version 1.2. Fixes display issues with newer graphics cards, adds naboo starfighter"
   LangString DESC_SectionDirectX			${LANG_English} "Installs DirectX 9.0c. Needed to play the game"
   LangString DESC_SectionMissionCrashFix	${LANG_English} "Patches the game executable so it stops crashing at the end of missions (Direct3D)"
+  LangString DESC_Section3DFXReg			${LANG_English} "Installs Rogue Squadron 3DFX registry keys"
   LangString UPDATE_INSTALL					${LANG_English} "Installing ${APP_NAME} update 1.2"
   LangString UPDATE_ERROR					${LANG_English} "There was an error installing ${APP_NAME} update 1.2"
   LangString DOWNLOAD_ERROR					${LANG_English} "Download failed: $0"
@@ -30,10 +32,12 @@
   LangString HEAD_SectionUpdate 			${LANG_French} "Mise à jour 1.2"
   LangString HEAD_SectionDirectX			${LANG_French} "DirectX 9.0c"
   LangString HEAD_SectionMissionCrashFix	${LANG_French} "Correctif Direct3D"
+  LangString HEAD_Section3DFXReg			${LANG_French} "Clés de registre 3dfx"
   LangString DESC_SectionGameInstall		${LANG_French} "Installation de ${APP_NAME}"
   LangString DESC_SectionUpdate 			${LANG_French} "Mise à jour du jeu vers la version 1.2. Corrige des problèmes d'affichage avec les cartes graphiques récentes, ajoute le vaisseau naboo"
   LangString DESC_SectionDirectX			${LANG_French} "Installation de DirectX 9.0c. Nécessaire pour jouer"
   LangString DESC_SectionMissionCrashFix	${LANG_French} "Patche l'exécutable du jeu afin qu'il arrête de crasher en fin de mission (Direct3D)"
+  LangString DESC_Section3DFXReg			${LANG_French} "Installation des clés de registre 3dfx de Rogue Squadron"
   LangString UPDATE_INSTALL					${LANG_French} "Installation de la mise à jour 1.2 de ${APP_NAME}"
   LangString UPDATE_ERROR					${LANG_French} "Erreur dans l'installation de la mise à jour 1.2 de ${APP_NAME}"
   LangString DOWNLOAD_ERROR					${LANG_French} "Le téléchargement à échoué: $0"
@@ -53,5 +57,6 @@
     !insertmacro MUI_DESCRIPTION_TEXT ${SectionUpdate} $(DESC_SectionUpdate)
     !insertmacro MUI_DESCRIPTION_TEXT ${SectionDirectX} $(DESC_SectionDirectX)
     !insertmacro MUI_DESCRIPTION_TEXT ${SectionNGlide} $(DESC_SectionNGlide)
+    !insertmacro MUI_DESCRIPTION_TEXT ${Section3DFXReg} $(DESC_Section3DFXReg)
     !insertmacro MUI_DESCRIPTION_TEXT ${SectionMissionCrashFix} $(DESC_SectionMissionCrashFix)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END

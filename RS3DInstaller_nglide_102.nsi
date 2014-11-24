@@ -18,7 +18,7 @@
   ;The version of nGlide
   !define NGLIDE_VERSION "102"
   ;The version of the installer
-  !define APP_VERSION "0.96_nglide_${NGLIDE_VERSION}"
+  !define APP_VERSION "0.97_tmp_nglide_${NGLIDE_VERSION}"
   ;The name of the publisher
   !define APP_PUBLISHER "LucasArts, Factor 5"
   ;Registry path
@@ -232,11 +232,18 @@ Section $(HEAD_SectionNGlide) SectionNGlide
     Abort
   noError:
   Delete $2
-  ;Select Glide renderer
-  WriteRegStr HKLM "${REG_PATH}" "3DSetup" "TRUE"
-  WriteRegStr HKLM "${REG_PATH}" "VDEVICE" "Voodoo (Glide)"
   ;Select nGlide default settings
   Call SetnGlideDefaults
+SectionEnd
+
+Section -$(HEAD_Section3DFXReg) Section3DFXReg
+  ;Select Glide renderer
+  Call GetnGlideVersion
+  Pop $R0
+  ${If} $R0 >= ${NGLIDE_VERSION}
+    WriteRegStr HKLM "${REG_PATH}" "3DSetup" "TRUE"
+    WriteRegStr HKLM "${REG_PATH}" "VDEVICE" "Voodoo (Glide)"
+  ${EndIf}
 SectionEnd
 
 !include "FileFunc.nsh"
@@ -440,9 +447,9 @@ Function RogueFilesCopy
     nsArray::Iterate FileSourceArray
     Pop $R0
     Pop $R1 ;Original file relative path
-	${IfNot} ${FileExists} "$RogueCDPath\$R1" ;Skip files that don't exist for older cdrom versions
-	  ${Continue}
-	${EndIf}
+    ${IfNot} ${FileExists} "$RogueCDPath\$R1" ;Skip files that don't exist for older cdrom versions
+      ${Continue}
+    ${EndIf}
     nsArray::Get FileDestArray $R0
     Pop $R2 ;Destination file relative path
     ${FileCopy} "$RogueCDPath\$R1" "$INSTDIR\$R2" $RunningOnWine
@@ -552,13 +559,13 @@ Function UninstallIfAlreadyInstalled
   ReadRegStr $0 ${INSTDIR_REG_ROOT} "${INSTDIR_REG_KEY}" "UninstallString"
   ${IfNot} ${Errors} ;key does exist
     ${If} ${Cmd} 'MessageBox MB_YESNO $(ALREADY_INSTALLED) IDYES' ;notice the quotes here
-	  ExecWait '"$0" _?=$INSTDIR' $1
-	  ${IfNot} $1 = 0
-        Abort
-	  ${EndIf}	  
-	${Else}
-	  Abort
-	${EndIf}
+      ExecWait '"$0" _?=$INSTDIR' $1
+      ${IfNot} $1 = 0
+           Abort
+      ${EndIf}
+    ${Else}
+      Abort
+    ${EndIf}
   ${EndIf}
   Call 64bitRegistryUnset
 FunctionEnd
