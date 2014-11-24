@@ -71,10 +71,6 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
     
     Win95/WinNT4 support and bugfixes by [Anders](http://nsis.sourceforge.net/User:Anders)
     
-  * [CDRom plug-in](http://nsis.sourceforge.net/CDRom_plug-in) **[v.1.0](http://nsis.sourceforge.net/mediawiki/images/5/50/Cdrom.zip)**:
-
-    Written by [Instructor](http://nsis.sourceforge.net/User:Instructor)
-    
   * [nsArray plug-in](http://nsis.sourceforge.net/Arrays_in_NSIS) **[v.1.1.1.6](http://nsis.sourceforge.net/mediawiki/images/9/97/NsArray.zip)**:
 
     Written by [Afrow UK](http://www.afrowsoft.co.uk/)

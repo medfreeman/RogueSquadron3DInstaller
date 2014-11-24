@@ -402,20 +402,17 @@ Function RogueCDRom
 FunctionEnd
  
 Function FindRogueCDRom ;Uses cdrom plugin
-  ;Get CD-ROM status
-  cdrom::Status "$9" .R0
+  !define GetVolumeInformation "Kernel32::GetVolumeInformation(t,t,i,*i,*i,*i,t,i) i"
+  ;Get CD-ROM information
+  System::Call '${GetVolumeInformation}("$9",.r0,${NSIS_MAX_STRLEN},.r1,,,,${NSIS_MAX_STRLEN})'
   
-  ;Get CD-ROM volume name
-  cdrom::VolumeName "$9" .R1
-  
-  ;If CD-ROM is ready
-  ${If} $R0 == 1
   ;And has correct volume name
-  ${AndIf} $R1 == "ROGUE_1_000"
+  ${If} $0 == "ROGUE_1_000"
   ${AndIf} ${FileExists} "$9ROGUE\ROGUE SQUADRON.EXE"
   ${AndIf} ${FileExists} "$9ROGUE\DATA\BUNDLE.000"
     ${TrailingSlashHit} "$9"
     Pop $RogueCDPath
+    StrCpy $0 StopGetDrives
   ${EndIf}
   
   ;Next Drive
