@@ -24,13 +24,13 @@ Function GetnGlideVersion
   ${Else}
     ReadRegStr $R1 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nGlide" "DisplayVersion"
     ${If} ${Errors}
-	  StrCpy $R0 0
-	${Else}
+      StrCpy $R0 0
+    ${Else}
       StrCpy $R0 $R1 1    ; get the major version
       StrCpy $R1 $R1 2 2    ; get the minor version
-	  IntOp $R0 $R0 * 100
-	  IntOp $R0 $R0 + $R1
-	${EndIf}
+      IntOp $R0 $R0 * 100
+      IntOp $R0 $R0 + $R1
+    ${EndIf}
   ${EndIf}
   Pop $R1
   Exch $R0
@@ -72,7 +72,7 @@ Function GetDXVersion
   done:
     Pop $1
     Exch $0
-	
+
   Call 64bitRegistryUnset
 FunctionEnd
 
