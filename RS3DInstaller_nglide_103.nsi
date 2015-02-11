@@ -1,7 +1,7 @@
 ;Rogue Squadron 3D Installer
 ;Written by med_freeman
 ;Attribution-NonCommercial-NoDerivs 3.0 Unported (CC BY-NC-ND 3.0) license - https://creativecommons.org/licenses/by-nc-nd/3.0/
-;2014-10-07 19:33
+;2015-02-11 20:46
 
 ;--------------------------------
 ;Include Modern UI
@@ -401,7 +401,7 @@ Function RogueCDRom
   MessageBox MB_OK $(ROGUECDROM_FOUND)
 FunctionEnd
  
-Function FindRogueCDRom ;Uses cdrom plugin
+Function FindRogueCDRom ;Uses system call, no more cdrom plugin
   !define GetVolumeInformation "Kernel32::GetVolumeInformation(t,t,i,*i,*i,*i,t,i) i"
   ;Get CD-ROM information
   System::Call '${GetVolumeInformation}("$9",.r0,${NSIS_MAX_STRLEN},.r1,,,,${NSIS_MAX_STRLEN})'
@@ -448,7 +448,7 @@ Function RogueFilesCopy
       ${Continue}
     ${EndIf}
     nsArray::Get FileDestArray $R0
-    Pop $R2 ;Destination file relative path
+    Pop $R2 ;Destination file / relative path / do not rename files
     ${FileCopy} "$RogueCDPath\$R1" "$INSTDIR\$R2" $RunningOnWine
     ${If} $RunningOnWine = 1
       AccessControl::GrantOnFile "$INSTDIR\$R2" "(BU)" "GenericRead + GenericWrite"
@@ -488,9 +488,9 @@ Function RogueRegistrySet
     ${EndIf}
   ${LoopUntil} ${Errors} ;Loop until array completely iterated
   
-  ;Magic key to recognize versions
+  ;Magic key to recognize versions for game update
   ${If} $RogueVersion == "1.2"
-    WriteRegDWORD HKLM "${REG_PATH}" "Magic" 0x000927d8 ;1.21
+    WriteRegDWORD HKLM "${REG_PATH}" "Magic" 0x000927d8 ;1.2
   ${ElseIf} $RogueVersion == "1.3"
     WriteRegDWORD HKLM "${REG_PATH}" "Magic" 0x0009283c ;1.3
   ${EndIf}
@@ -505,6 +505,7 @@ Function RogueRegistryUninstallSet
   WriteRegStr ${INSTDIR_REG_ROOT} "${INSTDIR_REG_KEY}" "Publisher" "${APP_PUBLISHER}"
   WriteRegStr ${INSTDIR_REG_ROOT} "${INSTDIR_REG_KEY}" "DisplayIcon" "$INSTDIR\Uninstall.exe,0"
   WriteRegStr ${INSTDIR_REG_ROOT} "${INSTDIR_REG_KEY}" "Readme" "$INSTDIR\README.TXT"
+  ;Calculating game folder size
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
   WriteRegDWORD ${INSTDIR_REG_ROOT} "${INSTDIR_REG_KEY}" "EstimatedSize" "$0"
