@@ -17,7 +17,7 @@ Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), devel
 
 **The only goal of this installer is to provide a means to install and play this game on newer systems, in the context of video game history preservation, and not in any way to bypass the original copy protection (which it doesn't), or favor piracy**
 
-Made with [nsis](http://nsis.sourceforge.net) 3.0b1
+Made with [nsis](https://nsis.sourceforge.io/) 3.12
 
 ## Changelog
 
@@ -58,7 +58,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Dependencies
 
-- NSIS 3.0b1 : [Download page](http://nsis.sourceforge.net/Download) / [Direct link](http://prdownloads.sourceforge.net/nsis/nsis-3.0b1-setup.exe?download)
+- NSIS 3.12 : [Download page](https://nsis.sourceforge.io/Download) / [Direct link](https://prdownloads.sourceforge.net/nsis/nsis-3.12-setup.exe?download)
 
 - NSIS Plugins and Headers (also available in the nsis folder in this repository, merge the contents of this folder to nsis installation folder):
   * [AccessControl plug-in](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
@@ -91,6 +91,10 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
     ```!undef ID```
 
   * [NSISdl translated header](http://forums.winamp.com/showthread.php?postid=1279800#18) **[2004-02-18](http://forums.winamp.com/attachment.php?attachmentid=24748&d=1077111624)**:
+
+    > ⚠️ There is an encoding error in the file.
+    >
+    > It is corrected in this repo's copy
 
     Written by deguix
 

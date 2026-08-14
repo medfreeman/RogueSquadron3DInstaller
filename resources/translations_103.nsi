@@ -4,6 +4,6 @@
   LangString NGLIDE_ERROR					${LANG_English} "There was an error installing nGlide 1.03"
   
   LangString HEAD_SectionNGlide				${LANG_French} "nGlide 1.03"
-  LangString DESC_SectionNGlide				${LANG_French} "Installation de nGlide 1.03 (émulation 3DFx). Rend le jeu jouable avec des cartes autres que ATi, jusqu'a une résolution de 7860x4320"
-  LangString NGLIDE_DOWNLOAD				${LANG_French} "Téléchargement de nGlide 1.03"
+  LangString DESC_SectionNGlide				${LANG_French} "Installation de nGlide 1.03 (Ã©mulation 3DFx). Rend le jeu jouable avec des cartes autres que ATi, jusqu'a une rÃ©solution de 7860x4320"
+  LangString NGLIDE_DOWNLOAD				${LANG_French} "TÃ©lÃ©chargement de nGlide 1.03"
   LangString NGLIDE_ERROR					${LANG_French} "Erreur dans l'installation de nGlide 1.03"

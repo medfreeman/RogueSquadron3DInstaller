@@ -50,7 +50,7 @@
     LangString NSISDL_MINUTE ${LANG_LITHUANIAN} "minute(s)"
     LangString NSISDL_HOUR ${LANG_LITHUANIAN} "valanda(os)"
     LangString NSISDL_PLURAL ${LANG_LITHUANIAN} ""
-    LangString NSISDL_PROGRESS ${LANG_LITHUANIAN} "%dkB (%d%%) iö %dkB @ %d.%01dkB/s"
+    LangString NSISDL_PROGRESS ${LANG_LITHUANIAN} "%dkB (%d%%) i≈° %dkB @ %d.%01dkB/s"
     LangString NSISDL_REMAINING ${LANG_LITHUANIAN} "(%d %s%s liko)"
 
   !endif
@@ -70,27 +70,27 @@
 
   !ifdef LANG_TRADCHINESE
 
-    LangString NSISDL_DOWNLOADING ${LANG_TRADCHINESE} "•ø¶b§U∏¸ %s"
-    LangString NSISDL_CONNECTING ${LANG_TRADCHINESE} "•ø¶b≥sΩu ..."
-    LangString NSISDL_SECOND ${LANG_TRADCHINESE} "¨Ì"
-    LangString NSISDL_MINUTE ${LANG_TRADCHINESE} "§¿"
-    LangString NSISDL_HOUR ${LANG_TRADCHINESE} "Æ…"
+    LangString NSISDL_DOWNLOADING ${LANG_TRADCHINESE} "¬•¬ø¬¶b¬§U¬∏√º %s"
+    LangString NSISDL_CONNECTING ${LANG_TRADCHINESE} "¬•¬ø¬¶b¬≥s¬Ωu ..."
+    LangString NSISDL_SECOND ${LANG_TRADCHINESE} "¬¨√≠"
+    LangString NSISDL_MINUTE ${LANG_TRADCHINESE} "¬§√Ä"
+    LangString NSISDL_HOUR ${LANG_TRADCHINESE} "¬Æ√â"
     LangString NSISDL_PLURAL ${LANG_TRADCHINESE} ""
     LangString NSISDL_PROGRESS ${LANG_TRADCHINESE} "%dkB (%d%%) / %dkB @ %d.%01dkB/s"
-    LangString NSISDL_REMAINING ${LANG_TRADCHINESE} "(≥—æl: %d %s%s )"
+    LangString NSISDL_REMAINING ${LANG_TRADCHINESE} "(¬≥√ë¬æl: %d %s%s )"
     
   !endif
 
   !ifdef LANG_SIMPCHINESE
 
-    LangString NSISDL_DOWNLOADING ${LANG_SIMPCHINESE} "’˝‘⁄œ¬‘ÿ %s"
-    LangString NSISDL_CONNECTING ${LANG_SIMPCHINESE} "’˝‘⁄¡¨Ω” ..."
-    LangString NSISDL_SECOND ${LANG_SIMPCHINESE} "√Î"
-    LangString NSISDL_MINUTE ${LANG_SIMPCHINESE} "∑÷"
-    LangString NSISDL_HOUR ${LANG_SIMPCHINESE} " ±"
+    LangString NSISDL_DOWNLOADING ${LANG_SIMPCHINESE} "√ï√Ω√î√ö√è√Ç√î√ò %s"
+    LangString NSISDL_CONNECTING ${LANG_SIMPCHINESE} "√ï√Ω√î√ö√Å¬¨¬Ω√ì ..."
+    LangString NSISDL_SECOND ${LANG_SIMPCHINESE} "√É√´"
+    LangString NSISDL_MINUTE ${LANG_SIMPCHINESE} "¬∑√ñ"
+    LangString NSISDL_HOUR ${LANG_SIMPCHINESE} "√ä¬±"
     LangString NSISDL_PLURAL ${LANG_SIMPCHINESE} ""
     LangString NSISDL_PROGRESS ${LANG_SIMPCHINESE} "%dkB (%d%%) / %dkB @ %d.%01dkB/s"
-    LangString NSISDL_REMAINING ${LANG_SIMPCHINESE} "( £”‡: %d %s%s )"
+    LangString NSISDL_REMAINING ${LANG_SIMPCHINESE} "(√ä¬£√ì√†: %d %s%s )"
     
   !endif
 
@@ -109,7 +109,7 @@
 
   !ifdef LANG_FRENCH
 
-    LangString NSISDL_DOWNLOADING ${LANG_FRENCH} "TÈlÈchargement de %s"
+    LangString NSISDL_DOWNLOADING ${LANG_FRENCH} "T√©l√©chargement de %s"
     LangString NSISDL_CONNECTING ${LANG_FRENCH} "Etablissement de la connection ..."
     LangString NSISDL_SECOND ${LANG_FRENCH} "seconde"
     LangString NSISDL_MINUTE ${LANG_FRENCH} "minute"
