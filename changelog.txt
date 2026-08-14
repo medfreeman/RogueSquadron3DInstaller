@@ -1,4 +1,13 @@
-﻿0.96
+﻿0.97 - 2026-08-15
+- Update nGlide to version 2.10
+- Download nGlide through https
+
+chore:
+- Replace NSISdl plugin by NScurl, more secure, https support
+- Add separate config for plugins
+- Update README
+
+0.96
 - Added the 1.2 update back into the installer, as there's not really a reliable direct link anymore (gamefront link was down)
 - fixed a section description
 0.95

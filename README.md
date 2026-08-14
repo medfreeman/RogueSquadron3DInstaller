@@ -3,11 +3,11 @@ RogueSquadron3DInstaller
 
 **Star Wars : Rogue Squadron 3D** unofficial installer
 
-Game published in 1998 by [LucasArts](http://www.starwars.com/games-apps), developed by [Factor 5](http://www.factor5.de/)
+Game published in 1998 by [LucasArts](https://www.starwars.com/games-apps), developed by [Factor 5](https://www.factor5.de/)
 
 *for Windows (All 32 and 64 bit versions from XP) and Wine*
 
-*tested on Windows 7 Ultimate x64, Ubuntu 14.04 Trusty x64, Debian Wheezy 7.6 x64 on Wine 1.7.26, 1.7.27 and 1.7.28, with Intel graphics HD4000, Nvidia Geforce 620m, and Geforce GTX 660Ti*
+*tested on Windows 7 Ultimate x64, Windows 11 Home, Ubuntu 14.04 Trusty x64, Debian Wheezy 7.6 x64 on Wine 1.7.26, 1.7.27 and 1.7.28, with Intel graphics HD4000, Intel Iris Xe, Nvidia Geforce 620m, and Geforce GTX 660Ti*
 
 **This software is freeware. It is neither supported nor endorsed by LucasArts. Use at your own risk! Original CD required.**
 
@@ -39,49 +39,55 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 - Contains update 1.2
 - Detects game version to avoid unecessary updates
 - Installs DirectX 9.0c
-- Installs [nGlide](http://www.zeus-software.com/downloads/nglide) glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 1920x1080). Automatically sets the renderer to glide.
+- Installs [nGlide](https://www.zeus-software.com/downloads/nglide) 2.10 glide wrapper, allowing to play the game in 3dfx mode, up to 7860x4320 (although i have tested only up to 2880x1800). Automatically sets the renderer to glide.
 - Patches the game to fix the Direct3D mission crash bug. The game is known to crash at the end of missions in D3D mode (albeit of limited use since the game doesn't work with a lot of cards in D3D mode)
 - Detects Wine (to disable directx installation and unsupported file copying method, force path)
 - Asks to run graphic settings at the end of setup
-- '/nocdprompt' command line switch to avoid asking two times for the cdrom when already asked before (i.e in [PlayOnLinux](http://www.playonlinux.com/) or [Lutris](https://lutris.net/))
+- '/nocdprompt' command line switch to avoid asking two times for the cdrom when already asked before (i.e in [PlayOnLinux](https://www.playonlinux.com/) or [Lutris](https://lutris.net/))
 
 ## Plans / Issues
 
 - Make an 1.3 update. It was only distributed in newer rogue squadron cds, never been packaged separatly. It was made to support more graphics cards and fix a few bugs. But i don't really know the real differences between 1.2 and 1.3
 - Test with non-english versions
-- Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !
-- Optionally integrate [SweetFX](http://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
-- Who knows ? [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
+- ~~Wait for the next nGlide update. The game runs perfect with latest version (1.03), but has a [mission crash bug of its own](https://www.zeus-software.com/forum/viewtopic.php?f=10&t=729), so you need to relaunch the game after each mission. Penultimate (1.02) has no bug, but the game feels laggy in every resolution. For now i'll provide two versions of the installer, one for each nGlide version. Up for you to choose. Thanks to them for their amazing work !~~
+- Integrate [Wingman](https://github.com/horkrux/wingman) to fix a list of known bugs such as the camera bug!
+- Support Steam and Gog versions of the game
+- Optionally integrate [SweetFX](https://forums.guru3d.com/showthread.php?t=381912), to allow for shiny new (or rusty) graphics for those who want it ! It is known to work with nGlide.
+- Who knows? [Reverse engineering Rogue Squadron 3D](https://satd.sk/web/rs/)
 - Update the [Wine HQ page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
 - Test on Mac (Wine)
-- Make the menu video work (by properly configuring LucasArts SANM fourcc)
+- Make the menu video work (by properly configuring LucasArts SANM fourcc, not sure if possible)
 
 ## Dependencies
 
 - NSIS 3.12 : [Download page](https://nsis.sourceforge.io/Download) / [Direct link](https://prdownloads.sourceforge.net/nsis/nsis-3.12-setup.exe?download)
 
 - NSIS Plugins and Headers (also available in the nsis folder in this repository, merge the contents of this folder to nsis installation folder):
-  * [AccessControl plug-in](http://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
+  * [AccessControl plug-in](https://nsis.sourceforge.net/AccessControl_plug-in) **[v.1.0.8.1](https://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip)**:
 
-    Written by [Mathias Hasselmann](http://taschenorakel.de/mathias/)
+    Written by [Mathias Hasselmann](https://taschenorakel.de/mathias/)
     
-    NSIS-Unicode port by [Olivier Marcoux](http://wizou.fr/)
+    NSIS-Unicode port by [Olivier Marcoux](https://wizou.fr/)
     
-    Major changes by [Afrow UK](http://www.afrowsoft.co.uk/)
+    Major changes by [Afrow UK](https://www.afrowsoft.co.uk/)
     
-    Win95/WinNT4 support and bugfixes by [Anders](http://nsis.sourceforge.net/User:Anders)
+    Win95/WinNT4 support and bugfixes by [Anders](https://nsis.sourceforge.net/User:Anders)
     
-  * [nsArray plug-in](http://nsis.sourceforge.net/Arrays_in_NSIS) **[v.1.1.1.6](http://nsis.sourceforge.net/mediawiki/images/9/97/NsArray.zip)**:
+  * [nsArray plug-in](https://nsis.sourceforge.net/Arrays_in_NSIS) **[v.1.1.1.6](https://nsis.sourceforge.net/mediawiki/images/9/97/NsArray.zip)**:
 
-    Written by [Afrow UK](http://www.afrowsoft.co.uk/)
+    Written by [Afrow UK](https://www.afrowsoft.co.uk/)
     
-  * [NsisFile plug-in](http://nsis.sourceforge.net/NsisFile_plug-in) **[v.1.0](http://wiz0u.free.fr/prog/nsisFile/latest.php)**:
+  * [NsisFile plug-in](https://nsis.sourceforge.net/NsisFile_plug-in) **[v.1.0](https://wiz0u.free.fr/prog/nsisFile/latest.php)**:
 
-    Written by [Wizou](http://nsis.sourceforge.net/User:Wizou)
+    Written by [Wizou](https://nsis.sourceforge.net/User:Wizou)
+
+  * [NScurl plug-in](https://github.com/negrutiu/nsis-nscurl)
+
+    Written by [Marius Negruțiu](https://github.com/negrutiu)
     
-  * [Advanced Uninstall Log NSIS Header](http://nsis.sourceforge.net/Advanced_Uninstall_Log_NSIS_Header) **[Download](http://nsis.sourceforge.net/mediawiki/images/1/12/Advunlog.zip)**:
+  * [Advanced Uninstall Log NSIS Header](https://nsis.sourceforge.net/Advanced_Uninstall_Log_NSIS_Header) **[Download](https://nsis.sourceforge.net/mediawiki/images/1/12/Advunlog.zip)**:
     
-    Written by [Red Wine](http://nsis.sourceforge.net/User:Red_Wine)
+    Written by [Red Wine](https://nsis.sourceforge.net/User:Red_Wine)
 
     **This header needs a fix or an error will be triggered during compilation** : 
     
@@ -89,42 +95,16 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
     ```!undef ID ${__LINE__}```
     to
     ```!undef ID```
-
-  * [NSISdl translated header](http://forums.winamp.com/showthread.php?postid=1279800#18) **[2004-02-18](http://forums.winamp.com/attachment.php?attachmentid=24748&d=1077111624)**:
-
-    > ⚠️ There is an encoding error in the file.
-    >
-    > It is corrected in this repo's copy
-
-    Written by deguix
-
-    Supported languages with their translators in alphabetical order:
-
-      English default language by Yaroslav Faybishenko and Justin Frankel
-
-      Chinese, Simplified translation by Kii Ali <kiiali@cpatch.org>
-    
-      Chinese, Traditional translation by "matini" and Kii Ali <kiiali@cpatch.org>
-    
-      Croatian translation by Igor Ostriz
-
-      German tranlation by Jan T. Sott
-
-      Lithuanian translation by Vytautas Krivickas
-
-      Portuguese, Brazilian translation by "deguix"
       
 ## Compilation
 
 - Clone this repository or download and extract archive
-- Right-click on RS3DInstaller_nglide_102.nsi or RS3DInstaller_nglide_103.nsi, then click 'Compile NSIS Script'
+- Right-click on RS3DInstaller.nsi, then click 'Compile NSIS Script'
 - Run the resulting executable, et voila !
 
 ## Installation
 
-- Download one of the two versions of the installer :
-  * [RS3DInstaller-0.96_nglide_102.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.96_nglide_102.exe) feels a bit laggy, but has no crash at the end of missions
-  * [RS3DInstaller-0.96_nglide_103.exe](http://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.96_nglide_103.exe) is smoother, but you need to relaunch the game after every mission
+- Download the installer [RS3DInstaller-0.97.exe](https://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.97.exe)
 - Insert original cdrom
 - Run the new installer
 - Play the game !
@@ -132,21 +112,21 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 ## Links and thanks
 
 - [development PlayOnLinux Rogue scripts](https://github.com/medfreeman/playonlinux/tree/master/RogueSquadron3D/WIP)
-  * [Testing game page](http://www.playonlinux.com/en/app-2277-Star_Wars__Rogue_Squadron_3D.html)
-- [nGlide](http://www.zeus-software.com/downloads/nglide)
-  * [Bug fix request thread](http://www.zeus-software.com/forum/viewtopic.php?f=10&t=729)
-- [nsis](http://nsis.sourceforge.net)
+  * [Testing game page](https://www.playonlinux.com/en/app-2277-Star_Wars__Rogue_Squadron_3D.html)
+- [nGlide](https://www.zeus-software.com/downloads/nglide)
+  * [Bug fix request thread](https://www.zeus-software.com/forum/viewtopic.php?f=10&t=729)
+- [nsis](https://nsis.sourceforge.net)
 - D3D Mission crash fix references
-  * http://forum.pj64-emu.com/archive/index.php/t-4168.html
-  * http://www.lucasforums.com/archive/index.php/t-171387.html
+  * https://forum.pj64-emu.com/archive/index.php/t-4168.html
+  * https://www.lucasforums.com/archive/index.php/t-171387.html
 - [Wine](https://www.winehq.org/)
   * [Wine game page](https://appdb.winehq.org/objectManager.php?sClass=application&iId=3258)
-- [PlayOnLinux](http://www.playonlinux.com/)
+- [PlayOnLinux](https://www.playonlinux.com/)
 - [Lutris](https://lutris.net/)
-- [SweetFX](http://forums.guru3d.com/showthread.php?t=381912)
-- [Reverse engineering Rogue Squadron 3D](http://satd.sk/web/rs/)
+- [SweetFX](https://forums.guru3d.com/showthread.php?t=381912)
+- [Reverse engineering Rogue Squadron 3D](https://satd.sk/web/rs/)
   * [Tools](https://github.com/dpethes/rerogue)
-- [Markus Egger](http://www.markusegger.at/Software/Games/Rogue/Instructions.html)
+- [Markus Egger](https://www.markusegger.at/Software/Games/Rogue/Instructions.html)
 
 ## Disclaimer
 

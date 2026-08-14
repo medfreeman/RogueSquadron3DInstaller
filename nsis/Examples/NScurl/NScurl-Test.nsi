@@ -1,0 +1,1234 @@
+
+# NScurl demo
+# Marius Negrutiu - https://github.com/negrutiu/nsis-nscurl
+#
+# Usage:
+#   NScurl-Test-arch-unicode.exe [/nscurl <custom_nscurl_dll>]
+#
+
+!ifdef TARGET
+	Target ${TARGET}                    ; x86-unicode, x86-ansi, amd64-unicode
+!else
+	!define TARGET x86-unicode          ; Default
+!endif
+
+!if /fileexists "${NSISDIR}\Include\ModernXXL.nsh"
+	!include "ModernXXL.nsh"		    ; Available in the NSIS fork from https://github.com/negrutiu/nsis
+!endif
+!include "MUI2.nsh"
+!define LOGICLIB_STRCMP
+!include "LogicLib.nsh"
+!include "Sections.nsh"
+
+!include "FileFunc.nsh"
+!insertmacro GetFileName
+!insertmacro GetOptions
+!insertmacro GetParameters
+
+!define /ifndef NULL 0
+!define /ifndef TRUE 1
+!define /ifndef FALSE 0
+!define TEST_FILE "$SYSDIR\lz32.dll"	; ...random file that exists in every Windows build
+
+# NScurl.dll custom location
+!ifdef PLUGINDIR
+	!ifdef NSIS_WIN32_MAKENSIS
+		!define _/_ "\"
+	!else
+		!define _/_ "/"		# posix (/fileexists is sensitive to path separators)
+	!endif
+	!if /fileexists "${PLUGINDIR}${_/_}NScurl.dll"
+		!AddPluginDir /${TARGET} "${PLUGINDIR}"
+		# look for NScurl.pdb
+		!if /fileexists "${PLUGINDIR}${_/_}NScurl.pdb"
+			!define PLUGINPDB "${PLUGINDIR}${_/_}NScurl.pdb"
+		!endif
+	!else
+		!error "Missing ${PLUGINDIR}${_/_}NScurl.dll"
+	!endif
+	!undef _/_
+!endif
+
+# GUI settings
+!define /ifndef MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install-nsis.ico"
+!define /ifndef MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange-nsis.bmp"
+
+# Welcome page
+;!define MUI_WELCOMEPAGE_TITLE_3LINES
+;!insertmacro MUI_PAGE_WELCOME
+
+# Components page
+!define INSTTYPE_NONE	1
+!define INSTTYPE_MOST	2
+InstType "None"			; 1
+InstType "Most"			; 2
+!define MUI_COMPONENTSPAGE_NODESC
+!insertmacro MUI_PAGE_COMPONENTS
+
+# Installation page
+!insertmacro MUI_PAGE_INSTFILES
+
+# Language
+!insertmacro MUI_LANGUAGE "English"
+;!insertmacro MUI_LANGUAGE "Romanian"
+!insertmacro MUI_RESERVEFILE_LANGDLL
+
+# Installer details
+Name    "NScurl-Test-${TARGET}"
+OutFile "NScurl-Test-${TARGET}.exe"
+XPStyle on
+RequestExecutionLevel user		        ; Don't require UAC elevation
+ShowInstDetails show
+ManifestDPIAware true
+
+Var /global g_workdir
+Var /global g_testCount
+Var /global g_testFails
+
+; Debugging macro, should not be used in production installers
+!macro STACK_VERIFY_START
+    Push "MyStackTop" ; Mark the top of the stack
+!macroend
+
+; Debugging macro, should not be used in production installers
+!macro STACK_VERIFY_END
+    Exch $0
+    StrCmp $0 "MyStackTop" +2
+        MessageBox MB_ICONSTOP 'Stack validation failed$\nStack top: "$0"'
+    Pop $0
+!macroend
+
+#---------------------------------------------------------------#
+# .onInit                                                       #
+#---------------------------------------------------------------#
+Function .onInit
+
+	; Initializations
+	InitPluginsDir
+!ifdef PLUGINPDB
+	File /oname=$PLUGINSDIR\NScurl.pdb ${PLUGINPDB}
+!endif
+    StrCpy $g_testCount 0
+    StrCpy $g_testFails 0
+
+	; Language selection
+	!define MUI_LANGDLL_ALLLANGUAGES
+	!insertmacro MUI_LANGDLL_DISPLAY
+
+    ; look for `/nscurl <path>` command line parameter
+    ; if specified, copy this file to $PLUGINSDIR to replace the built-in NScurl.dll
+    ; this is a development feature and should not be included in production installers
+	${GetParameters} $R0
+	${GetOptions} $R0 "/nscurl" $R1
+	${IfNot} ${Errors}
+        ; Try creating a hard link
+        System::Call 'kernel32::CreateHardLink(t "$PLUGINSDIR\NScurl.dll", t r11, p ${NULL}) i.r0 ? e'
+        Pop $1
+        ${If} $0 = ${FALSE}
+        ${OrIf} $0 == "error"
+            ; Try copying the file
+            ClearErrors
+            CopyFiles /SILENT /FILESONLY $R1 "$PLUGINSDIR\NScurl.dll"
+            ${If} ${Errors}
+                ; Everything failed
+                StrCmp $0 "error" +2 +1
+                    IntFmt $0 "0x%x" $1
+                MessageBox MB_ICONSTOP 'CreateHardLink("$R1" -> "$$PLUGINSDIR\NScurl.dll") = $0$\nCopy("$R1" -> "$$PLUGINSDIR") failed$\n$\nUsing the built-in NScurl.dll ...'
+            ${EndIf}
+        ${EndIf}
+	${EndIf}
+
+	; Working directory
+	; Use $EXEDIR if we've got write access, else fall back to $TEMP
+	StrCpy $g_workdir "$EXEDIR\NScurl-Test-Files"
+	ClearErrors
+	CreateDirectory $g_workdir
+	${If} ${Errors}
+		StrCpy $g_workdir "$TEMP\NScurl-Test-Files"
+		CreateDirectory $g_workdir
+	${EndIf}
+
+/*
+	; .onInit download demo
+	; NOTE: Transfers from .onInit can be either Silent or Popup (no Page!)
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuiteLive_onInit.zip"
+	NScurl::http GET "${LINK}" "${FILE}" /POPUP /CANCEL /END
+	Pop $0
+*/
+
+    ; Quick .onInit plugin test
+    NScurl::query "@PLUGINWEB@" /END
+    Pop $0
+    StrCpy $1 $0 8
+    ${If} $1 != "https://"
+        MessageBox MB_ICONSTOP '[.onInit]$\nFailed to query plugin webpage$\nReturn value: "$0"'
+    ${EndIf}
+
+FunctionEnd
+
+
+Section "Cleanup test files"
+	SectionIn ${INSTTYPE_NONE} ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+	RMDir /r $g_workdir
+SectionEnd
+
+
+Section "Background (50 * put)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	StrCpy $1 ""
+	${For} $R0 1 50
+		NScurl::http PUT "https://httpbin.org/put" "Memory" /DATA -file "${TEST_FILE}" /BACKGROUND /INSIST /TAG "parallels" /END
+		Pop $0
+		IntCmp $R0 1 +2 +1 +1
+			StrCpy $1 "$1, "
+		StrCpy $1 "$1$0"
+	${Next}
+	DetailPrint "IDs = {$1}"
+SectionEnd
+
+
+Section "httpbin.org/get"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/get?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_GET_httpbin.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http get "${LINK}" "${FILE}" /HEADER "Header1: Value1$\r$\nHeader2: Value2" /HEADER "Header3: Value3" /REFERER "https://test.com" /END
+	Pop $0
+
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "httpbun.com/cookies/set"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbun.com/cookies/set?cookie1=value1&cookie2=value2'
+	!define /redef FILE '$g_workdir\_GET_httpbun_cookies_set'
+    !define /redef JAR  '$g_workdir\_GET_httpbun_cookiejar.txt'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+    NScurl::http get "${LINK}" "${FILE}" /COOKIEJAR "${JAR}" /END
+	Pop $0
+
+    ${If} ${FileExists} "${JAR}"
+        StrCpy $1 "OK (file exists)"
+    ${Else}
+        StrCpy $1 "FAIL (not found: ${JAR})"
+    ${EndIf}
+
+	DetailPrint "Status: $0"
+	DetailPrint "Cookie jar: $1"
+SectionEnd
+
+
+Section "sysinternals.com/get (Page-Mode)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuiteLive.zip"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http get "${LINK}" "${FILE}" /CANCEL /INSIST /Zone.Identifier /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "sysinternals.com/get (Popup-Mode)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuiteLive_Popup.zip"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http get "${LINK}" "${FILE}" /CANCEL /POPUP /INSIST /Zone.Identifier /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "sysinternals.com/get (Silent-Mode)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuiteLive_Silent.zip"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http get "${LINK}" "${FILE}" /CANCEL /SILENT /INSIST /Zone.Identifier /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "sysinternals.com/get (HTTP/1.1)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuite_http1.zip"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http get "${LINK}" "${FILE}" /HTTP1.1 /INSIST /CANCEL /Zone.Identifier /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "sysinternals.com/get (Memory)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuite_memory.zip"
+
+	DetailPrint 'NScurl::http "${LINK}" "Memory"'
+	NScurl::http get "${LINK}" "Memory" /CANCEL /INSIST /RETURN "@id@" /END
+	Pop $R0
+	DetailPrint "ID: $R0"
+
+    ; For demonstration purposes, we'll retrieve the first two bytes of the remote content stored in memory
+    ; If the data begins with the "PK" sequence (the standard zip file magic bytes), we'll save it to disk as a .zip file
+    DetailPrint 'NScurl::query /id $R0 "@RecvData:0,2@"'
+	NScurl::query /id $R0 "@RecvData:0,2@" /END
+    Pop $0
+    DetailPrint '  RecvData[0,2]: "$0"'
+
+    ${If} $0 == "PK"
+        DetailPrint 'NScurl::query /id $R0 "@RecvData>${FILE}@"'
+        NScurl::query /id $R0 "@RecvData>${FILE}@" /END
+        Pop $0      ; @RecvData@ trimmed down to ${NSIS_MAX_STRLEN}
+        DetailPrint '  RecvData: $0'
+    ${EndIf}
+
+SectionEnd
+
+
+Section "sysinternals.com/get (SpeedCap: 300KB/s)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+	!define /redef FILE  "$g_workdir\_SysinternalsSuiteLive_SpeedCap.zip"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http get "${LINK}" "${FILE}" /RESUME /CANCEL /INSIST /SPEEDCAP 307200 /Zone.Identifier /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "github.com/get (Encoding)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK  "https://raw.githubusercontent.com/negrutiu/nsis-nscurl/master/src/nscurl/curl.c"
+	!define /redef FILE  "$g_workdir\_curl.c"
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	; note: /Accept-Encoding is incompatible with /RESUME or MEMORY transfers
+	; note: Notice that content-lenght indicates the size of the gzip-compressed data (15kb) and not the actual data size (60kb)
+	NScurl::http get "${LINK}" "${FILE}" /Accept-Encoding /CANCEL /INSIST /Zone.Identifier /RETURN "@id@" /END
+	Pop $R0
+	DetailPrint "ID: $R0"
+
+    NScurl::query /id $R0 "@RecvHeaders:content-encoding@"
+    Pop $0
+    DetailPrint "Reply Headers[content-encoding]: $0"
+
+SectionEnd
+
+
+Section "httpbin.org/post (multipart/form-data)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/post?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_POST_httpbin_multipart.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	!define S1 "<Your memory data here>"
+	StrLen $R1 "${S1}"
+	System::Call '*(&m128 "${S1}") p.r10'
+
+	NScurl::http \
+		POST \
+		"${LINK}" \
+		"${FILE}" \
+		/HEADER "Header1: Value1$\r$\nHeader2: Value2" \
+		/HEADER "Header3: Value3" \
+		/POST "filename=maiden.json" "type=application/json" "maiden.json" '{ "number_of_the_beast" : 666 }' \
+		/POST "Name" "<Your name here>" \
+		/POST "Password" "<Your password here>" \
+		/POST "filename=test.bin" "test.bin" -file "${TEST_FILE}" \
+		/POST "filename=test2.bin" "test2.bin" -file "${TEST_FILE}" \
+		/POST "type=application/octet-stream" "Binary" -memory $R0 $R1 \
+		/INSIST \
+		/REFERER "https://test.com" \
+		/END
+
+	Pop $0
+	DetailPrint "Status: $0"
+
+	System::Free $R0
+	!undef S1
+
+SectionEnd
+
+
+Section "httpbin.org/post (application/x-www-form-urlencoded)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/post?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_POST_httpbin_postfields.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http \
+		POST \
+		"${LINK}" \
+		"${FILE}" \
+		/HEADER "Header1: Value1$\r$\nHeader2: Value2" \
+		/HEADER "Header3: Value3" \
+		/DATA 'User=Your+name+here&Password=Your+password+here' \
+		/INSIST \
+		/REFERER "https://test.com" \
+		/END
+
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "httpbin.org/post (application/json)"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/post?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_POST_httpbin_json.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http \
+		POST \
+		"${LINK}" \
+		"${FILE}" \
+		/HEADER "Content-Type: application/json" \
+		/DATA '{ "number_of_the_beast" : 666 }' \
+		/INSIST \
+		/REFERER "https://test.com" \
+		/END
+
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "httpbin.org/put"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/put?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_PUT_httpbin.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http \
+		PUT \
+		"${LINK}" \
+		"${FILE}" \
+		/HEADER "Header1: Value1$\r$\nHeader2: Value2" \
+		/HEADER "Header3: Value3" \
+		/HEADER "Content-Type: application/json" \
+		/DATA '{ "number_of_the_beast" : 666 }' \
+		/INSIST \
+		/REFERER "https://test.com" \
+		/END
+
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "Big file (100MB)"
+	;SectionIn ${INSTTYPE_CUSTOM}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://hil-speed.hetzner.com/100MB.bin'
+	!define /redef FILE '$g_workdir\_GET_100MB.bin'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http GET "${LINK}" "${FILE}" /STRING TEXT "[@PERCENT@%] @TIMEELAPSED@ / @TIMEREMAINING@, @XFERSIZE@ / @FILESIZE@, Average @AVGSPEED@, Speed @SPEED@" /INSIST /CANCEL /RESUME /TIMEOUT 1m /USERAGENT "curl/@CURLVERSION@" /TITLEWND $HWNDPARENT /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+Section "Big file (10GB)"
+	;SectionIn ${INSTTYPE_CUSTOM}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://hil-speed.hetzner.com/10GB.bin'
+	!define /redef FILE '$g_workdir\_GET_10GB.bin'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+
+	NScurl::http GET "${LINK}" "${FILE}" /STRING TEXT "[@PERCENT@%] @TIMEELAPSED@ / @TIMEREMAINING@, @XFERSIZE@ / @FILESIZE@, Average @AVGSPEED@, Speed @SPEED@" /INSIST /RESUME /CANCEL /TIMEOUT 1m /USERAGENT "curl/@CURLVERSION@" /TITLEWND $HWNDPARENT /END
+	Pop $0
+	DetailPrint "Status: $0"
+
+SectionEnd
+
+
+SectionGroup /e "Tests"
+
+Var /global testCacertName
+Var /global testCacertValue
+Var /global testCastoreName
+Var /global testCastoreValue
+Var /global testCertName
+Var /global testCertValue
+Var /global testSecurityName
+Var /global testSecurityValue
+
+!macro REPORT_TEST _errorTypeExpected _errorCodeExpected _errorTypeEncountered _errorCodeEncountered
+    IntOp $g_testCount $g_testCount + 1
+    ${If} `${_errorTypeEncountered}` == `${_errorTypeExpected}`
+    ${AndIf} `${_errorCodeEncountered}` = `${_errorCodeExpected}`
+        DetailPrint `[ OK ] ${_errorTypeEncountered}/${_errorCodeEncountered}`
+    ${Else}
+        IntOp $g_testFails $g_testFails + 1
+        DetailPrint `----- FAIL ----- ${_errorTypeEncountered}/${_errorCodeEncountered} => expected ${_errorTypeExpected}/${_errorCodeExpected}`
+    ${EndIf}
+!macroend
+
+!macro TRANSFER_TEST url file cacert castore cert security errortype errorcode
+    !insertmacro STACK_VERIFY_START
+
+    StrCpy $R0 '${file}'
+
+    ${If} `${cacert}` == ""
+        StrCpy $testCacertName ""
+        StrCpy $testCacertValue ""
+        StrCpy $R0 '$R0,cacert=def'
+    ${ElseIf} `${cacert}` == "none"
+    ${OrIf} `${cacert}` == "builtin"
+        StrCpy $testCacertName "/CACERT"
+        StrCpy $testCacertValue `${cacert}`
+        StrCpy $R0 '$R0,cacert=${cacert}'
+    ${Else}
+        StrCpy $testCacertName "/CACERT"
+        StrCpy $testCacertValue `${cacert}`
+        StrCpy $R0 '$R0,cacert=file'
+    ${EndIf}
+
+    ${If} `${castore}` == ""
+        StrCpy $testCastoreName ""
+        StrCpy $testCastoreValue ""
+        StrCpy $R0 '$R0,castore=def'
+    ${Else}
+        StrCpy $testCastoreName "/CASTORE"
+        StrCpy $testCastoreValue `${castore}`
+        StrCpy $R0 '$R0,castore=${castore}'
+    ${EndIf}
+
+    ${If} `${cert}` == ""
+        StrCpy $testCertName ""
+        StrCpy $testCertValue ""
+        StrCpy $R0 '$R0,cert=def'
+    ${Else}
+        StrCpy $testCertName "/CERT"
+        StrCpy $testCertValue `${cert}`
+        StrCpy $0 `${cert}` 8
+        StrCpy $R0 '$R0,cert=$0'
+    ${EndIf}
+
+    ${If} `${security}` == ""
+        StrCpy $testSecurityName ""
+        StrCpy $testSecurityValue ""
+        StrCpy $R0 '$R0,security=def'
+    ${Else}
+        StrCpy $testSecurityName "/SECURITY"
+        StrCpy $testSecurityValue `${security}`
+        StrCpy $R0 '$R0,security=${security}'
+    ${EndIf}
+
+    ${GetFileName} $R0 $0
+	DetailPrint 'NScurl::http "${url}" "$0"'
+
+    ; badssl.com can be laggy sometimes (/TIMEOUT 60s)
+    NScurl::http \
+        GET \
+        "${url}" \
+        memory \
+        $testSecurityName $testSecurityValue \
+        $testCacertName $testCacertValue \
+        $testCastoreName $testCastoreValue  \
+        $testCertName $testCertValue \
+        /TIMEOUT 60s /INSIST /CANCEL \
+        /RETURN "@ID@" \
+        /TAG "test" \
+        /DEBUG "nodata" "$R0.debug.txt" \
+        /END
+	Pop $0  ; transfer ID
+
+    NScurl::query /ID $0 "@Error@"
+    Pop $1
+    ${If} $1 != "OK"
+        DetailPrint "Status: $1"
+    ${EndIf}
+
+    NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+
+    NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+
+	!insertmacro REPORT_TEST ${errortype} ${errorcode} $1 $2
+
+	!insertmacro STACK_VERIFY_END
+!macroend
+
+Section "Expired certificate"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://expired.badssl.com'
+	!define /redef FILE '$g_workdir\_test_expired'
+
+    !define /ifndef X509_V_ERR_CERT_HAS_EXPIRED 10
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     ''      '' '' x509 ${X509_V_ERR_CERT_HAS_EXPIRED} ; cacert + castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     'false' '' '' x509 ${X509_V_ERR_CERT_HAS_EXPIRED} ; cacert + no castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200                            ; no cacert + no castore = validation disabled
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+    !insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "Revoked certificate"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://revoked.badssl.com/'
+	!define /redef FILE '$g_workdir\_test_revoked'
+
+    !define /ifndef X509_V_ERR_CERT_REVOKED 23
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     ''      '' '' x509 ${X509_V_ERR_CERT_REVOKED} ; cacert + castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     'false' '' '' x509 ${X509_V_ERR_CERT_REVOKED} ; cacert + no castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200                        ; no cacert + no castore = validation disabled
+	DetailPrint 'TODO: know issue. fix it'
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+    !insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "Wrong host"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://wrong.host.badssl.com'
+	!define /redef FILE '$g_workdir\_test_wronghost'
+
+    !define /ifndef CURLE_PEER_FAILED_VERIFICATION 60
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     ''      '' '' curl ${CURLE_PEER_FAILED_VERIFICATION} ; cacert + castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     'false' '' '' curl ${CURLE_PEER_FAILED_VERIFICATION} ; cacert + no castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200                               ; SSL validation disabled
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Var /global testBadsslUntrustedThumbprint
+Function RefreshBadsslUntrustedCertificate
+	NScurl::http GET "https://untrusted-root.badssl.com" memory /RETURN "@CERTINFO:thumbprint@" /TAG "test" /END
+    Pop $testBadsslUntrustedThumbprint
+	DetailPrint 'untrusted-root.badssl.com: $testBadsslUntrustedThumbprint'
+FunctionEnd
+
+Section "Untrusted root"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	Call RefreshBadsslUntrustedCertificate
+
+	!define /redef LINK 'https://untrusted-root.badssl.com'
+	!define /redef FILE '$g_workdir\_test_untrustroot'
+
+    !define /ifndef X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN 19
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' ''                             '' x509 ${X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' $testBadsslUntrustedThumbprint '' http 200
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'true'  '' '' x509 ${X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200       ; SSL validation disabled
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Var /global testBadsslSelfsignCertificate	; pem
+Var /global testBadsslSelfsignThumbprint
+Function RefreshBadsslSelfsignedCertificate
+	NScurl::http GET "https://self-signed.badssl.com" memory /RETURN "@id@" /TAG "test" /END
+	Pop $0
+
+	NScurl::query /ID $0 "@CERTINFO:certificate@"
+    Pop $testBadsslSelfsignCertificate
+	;DetailPrint 'self-signed.badssl.com: $testBadsslSelfsignCertificate'
+
+	NScurl::query /ID $0 "@CERTINFO:thumbprint@"
+    Pop $testBadsslSelfsignThumbprint
+	DetailPrint 'self-signed.badssl.com: $testBadsslSelfsignThumbprint'
+FunctionEnd
+
+Section "Self-signed certificate"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	Call RefreshBadsslSelfsignedCertificate
+
+	!define /redef LINK 'https://self-signed.badssl.com'
+	!define /redef FILE '$g_workdir\_test_selfsigned'
+
+    !define /ifndef X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT 18
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''        '' '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'builtin' '' '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none'    '' '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' $testBadsslSelfsignCertificate '' http 200
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'builtin' 'true'  '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'builtin' 'false' '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none'    'true'  '' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200       ; SSL validation disabled
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'true'  '1111111111111111111111111111111111111111' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '1111111111111111111111111111111111111111' '' x509 ${X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT}
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'true'  $testBadsslSelfsignThumbprint '' http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' $testBadsslSelfsignThumbprint '' http 200
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+/*
+NOTE: This website has updated its TLS
+
+Var /global testGovMyThumbprint
+Function RefreshGovMyCertificate
+	NScurl::http GET "https://publicinfobanjir.water.gov.my" memory /RETURN "@CERTINFO:thumbprint@" /SECURITY weak /TAG "test" /END
+    Pop $testGovMyThumbprint
+	DetailPrint 'publicinfobanjir.water.gov.my: $testGovMyThumbprint'
+FunctionEnd
+
+Section "Unsafe legacy renegociation"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	Call RefreshGovMyCertificate
+
+	!define /redef LINK 'https://publicinfobanjir.water.gov.my'
+	!define /redef FILE '$g_workdir\_test_legacynego'
+
+    !define /redef CURLE_SSL_CONNECT_ERROR 35
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' $testGovMyThumbprint ''       curl ${CURLE_SSL_CONNECT_ERROR} ; 'strong' by default
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' $testGovMyThumbprint 'weak'   http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' $testGovMyThumbprint 'strong' curl ${CURLE_SSL_CONNECT_ERROR} ; OpenSSL/3.3.1: error:0A000152:SSL routines::unsafe legacy renegotiation disabled
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+*/
+
+Section "Windows root store"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://microsoft.com'
+	!define /redef FILE '$g_workdir\_test_castore.html'
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     ''      '' '' http 200 ; cacert + castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' ''     'false' '' '' http 200 ; cacert + no castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'true'  '' '' http 200 ; no cacert + castore
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' 'none' 'false' '' '' http 200 ; validation disabled
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "Weak protocols"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+    !define /redef CURLE_SSL_CONNECT_ERROR 35
+    
+	!define /redef LINK 'https://tls-v1-0.badssl.com:1010/'
+	!define /redef FILE '$g_workdir\_test_weaktls10'
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' ''       curl ${CURLE_SSL_CONNECT_ERROR}    ; 'strong' by default
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'weak'   http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'strong' curl ${CURLE_SSL_CONNECT_ERROR}    ; OpenSSL/3.3.1: error:0A000102:SSL routines::unsupported protocol
+
+
+	!define /redef LINK 'https://tls-v1-1.badssl.com:1011/'
+	!define /redef FILE '$g_workdir\_test_weaktls11'
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' ''       curl ${CURLE_SSL_CONNECT_ERROR}    ; 'strong' by default
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'weak'   http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'strong' curl ${CURLE_SSL_CONNECT_ERROR}    ; OpenSSL/3.3.1: error:0A000102:SSL routines::unsupported protocol
+
+
+    !define /redef LINK 'https://tls-v1-2.badssl.com:1012/'
+	!define /redef FILE '$g_workdir\_test_weaktls12'
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' ''       http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'weak'   http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'strong' http 200   ; TLS 1.2 should always work
+
+    ; ----------------------------------------------
+
+    !define /redef LINK 'https://dh2048.badssl.com'
+	!define /redef FILE '$g_workdir\_test_weakdh2k'
+
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' ''       http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'weak'   http 200
+    !insertmacro TRANSFER_TEST '${LINK}' '${FILE}' '' '' '' 'strong' http 200
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "Cookie jar"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbun.com/cookies/set?cookie1=value1&cookie2=value2'
+	!define /redef FILE '$g_workdir\_test_cookiejar_body'
+	!define /redef JAR  '$g_workdir\_test_cookiejar.txt'
+
+    Delete "${JAR}"
+
+    DetailPrint 'NScurl::http "${LINK}" /COOKIEJAR "${JAR}"'
+    NScurl::http get "${LINK}" "${FILE}" /COOKIEJAR "${JAR}" /TAG "test" /END
+    Pop $0
+
+    ${If} ${FileExists} "${JAR}"
+        StrCpy $1 ${TRUE}
+    ${Else}
+        StrCpy $1 ${FALSE}
+    ${EndIf}
+	!insertmacro REPORT_TEST "jar exists" ${TRUE} "jar exists" $1
+
+    NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "HTTP/3"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	; https://bagder.github.io/HTTP3-test
+	!define /redef LINK 'https://h2o.examp1e.net'
+	!define /redef FILE '$g_workdir\_test_http3.html'
+
+	DetailPrint 'NScurl::http GET "${LINK}" "${FILE}" /HTTP3'
+	NScurl::http GET "${LINK}" "${FILE}" /RETURN "@id@" /HTTP3 /CANCEL /TAG "test" /END
+	Pop $0	; transfer ID
+
+	NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+
+	NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+
+    NScurl::query /ID $0 "@RecvHeaders@"
+    Pop $3
+	DetailPrint 'Headers: $3'
+
+    StrCmp $1 "http" +1 +2
+        StrCpy $1 $3 6 ; extract leading "HTTP/x" from headers
+	!insertmacro REPORT_TEST "HTTP/3" 200 $1 $2
+
+	NScurl::cancel /TAG "test" /REMOVE
+
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "HTTP/40x"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	; -- GET
+	!define /redef LINK 'https://httpbin.org/status/401'
+	!define /redef FILE '$g_workdir\_test_status_402_get.json'
+	DetailPrint 'NScurl::http GET "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /RETURN "@id@" /INSIST /CANCEL /TAG "test" /END
+	Pop $0	; transfer ID
+
+	NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+	NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+	!insertmacro REPORT_TEST "http" 401 $1 $2
+
+	; -- POST
+	!define /redef LINK 'https://httpbin.org/status/402'
+	!define /redef FILE '$g_workdir\_test_status_402_post.json'
+	DetailPrint 'NScurl::http POST "${LINK}" "${FILE}"'
+	NScurl::http POST "${LINK}" "${FILE}" /RETURN "@id@" /INSIST /CANCEL /TAG "test" /END
+	Pop $0	; transfer ID
+
+	NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+	NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+	!insertmacro REPORT_TEST "http" 402 $1 $2
+
+	; -- PUT
+	!define /redef LINK 'https://httpbin.org/status/403'
+	!define /redef FILE '$g_workdir\_test_status_403_put.json'
+	DetailPrint 'NScurl::http PUT "${LINK}" "${FILE}"'
+	NScurl::http PUT "${LINK}" "${FILE}" /RETURN "@id@" /INSIST /CANCEL /TAG "test" /END
+	Pop $0	; transfer ID
+
+	NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+	NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+	!insertmacro REPORT_TEST "http" 403 $1 $2
+
+	NScurl::cancel /TAG "test" /REMOVE
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+Section "HTTP public key pinning (HPKP)"
+	!insertmacro STACK_VERIFY_START
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://pinning-test.badssl.com/'
+	!define /redef FILE '$g_workdir\_test_hpkp.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /RETURN "@id@" /INSIST /CANCEL /TAG "test" /END
+	Pop $0	; transfer ID
+
+	NScurl::query /ID $0 "@ErrorType@"
+    Pop $1
+	NScurl::query /ID $0 "@ErrorCode@"
+    Pop $2
+	!insertmacro REPORT_TEST "curl" 90 $1 $2
+	DetailPrint 'TODO: known issue. fix it'
+
+	NScurl::cancel /TAG "test" /REMOVE
+	!insertmacro STACK_VERIFY_END
+SectionEnd
+
+SectionGroupEnd
+
+
+SectionGroup /e "Authentication"
+
+Section "httpbin.org/basic-auth"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/basic-auth/MyUser/MyPass'
+	!define /redef FILE '$g_workdir\_GET_httpbin_basic-auth.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "MyUser" "MyPass" "/DEBUG" "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+
+Section "httpbin.org/hidden-basic-auth"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/hidden-basic-auth/MyUser/MyPass'
+	!define /redef FILE '$g_workdir\_GET_httpbin_hidden-basic-auth.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "type=basic" "MyUser" "MyPass" "/DEBUG" "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+
+Section "httpbin.org/bearer"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/bearer'
+	!define /redef FILE '$g_workdir\_GET_httpbin_bearer.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "type=bearer" "MyOauth2Token" "/DEBUG" "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+
+Section "httpbin.org/digest-auth/auth"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/digest-auth/auth/MyUser/MyPass/SHA-256'
+	!define /redef FILE '$g_workdir\_GET_httpbin_digest-auth.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "type=digest" "MyUser" "MyPass" "/DEBUG" "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+
+Section "httpbin.org/digest-auth/auth-int"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/digest-auth/auth-int/MyUser/MyPass/SHA-256'
+	!define /redef FILE '$g_workdir\_GET_httpbin_digest-auth-int.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "MyUser" "MyPass" "/DEBUG" "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+SectionGroupEnd		; Authentication
+
+
+SectionGroup /e "Proxy"
+
+Section "proxy -> httpbin.org/get"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/get?param1=value1&param2=value2'
+	!define /redef FILE '$g_workdir\_GET_httpbin_proxy.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /PROXY "http://136.243.47.220:3128" /CANCEL /DEBUG "${FILE}.md" /END		; Germany
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+
+Section "proxy -> httpbin.org/digest-auth/auth-int"
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	!define /redef LINK 'https://httpbin.org/digest-auth/auth-int/MyUser/MyPass/SHA-256'
+	!define /redef FILE '$g_workdir\_GET_httpbin_proxy_digest-auth-int.json'
+	DetailPrint 'NScurl::http "${LINK}" "${FILE}"'
+	NScurl::http GET "${LINK}" "${FILE}" /AUTH "MyUser" "MyPass" /PROXY "http://136.243.47.220:3128" /CANCEL /DEBUG "${FILE}.md" /END
+	Pop $0
+	DetailPrint "Status: $0"
+SectionEnd
+
+SectionGroupEnd		; Proxy
+
+
+Section "Wait for all"
+	SectionIn ${INSTTYPE_NONE} ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	DetailPrint 'Waiting...'
+	NScurl::wait /CANCEL /TITLEWND $HWNDPARENT /end
+
+	; Print summary
+	Call PrintAllRequests
+
+SectionEnd
+
+
+Function PrintAllRequests
+
+	; NScurl::enumerate
+    ClearErrors
+	NScurl::enumerate /END
+    IfErrors 0 +2
+        Return
+	
+_enum_loop:
+
+	StrCpy $0 ""
+	Pop $0
+	StrCmp $0 "" _enum_end
+
+	DetailPrint '[ID: $0] -----------------------------------------------'
+
+	NScurl::query /ID $0 'Status: @Status@, @ERROR@, Percent: @PERCENT@%, Size: @XFERSIZE@, Speed: @SPEED@, Time: @TIMEELAPSED@, Tag: "@TAG@"'
+	Pop $1
+	DetailPrint "$1"
+
+	NScurl::query /ID $0 '@METHOD@ @URL@ -> @OUT@'
+	Pop $1
+	DetailPrint "$1"
+
+	NScurl::query /ID $0 'Request Headers: @SENTHEADERS@'
+	Pop $1
+	DetailPrint "$1"
+
+	NScurl::query /ID $0 'Reply Headers: @RECVHEADERS@'
+	Pop $1
+	DetailPrint "$1"
+
+	NScurl::query /ID $0 'Remote Content: @RECVDATA:0,128@'
+	Pop $1
+	DetailPrint "$1"
+
+	Goto _enum_loop
+_enum_end:
+
+FunctionEnd
+
+
+SectionGroup /e Extra
+
+
+Section Echo
+	;SectionIn ${INSTTYPE_CUSTOM}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	; NScurl::echo
+	NScurl::echo "aaa" bbb 1 0x2 /END
+	Pop $0
+	DetailPrint 'NScurl::echo(...) = "$0"'
+
+SectionEnd
+
+
+Section Hashes
+	;SectionIn ${INSTTYPE_CUSTOM}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+	!define S1 "Hash this string"
+
+	; NScurl::md5 -file filename
+	NScurl::md5 -file $EXEPATH
+	Pop $0
+	DetailPrint 'NScurl::md5 -file "$EXEFILE" = "$0"'
+
+	; NScurl::md5 -string string
+	NScurl::md5 -string "${S1}"
+	Pop $0
+	DetailPrint 'NScurl::md5 -string "${S1}" = "$0"'
+
+	; NScurl::md5 -memory ptr size
+	StrLen $R1 "${S1}"
+	System::Call '*(&m128 "${S1}") p.r10'
+	; IntFmt $R0 "0x%Ix" $R0    ; not working in nt4
+
+	NScurl::md5 -memory $R0 $R1
+	Pop $0
+	DetailPrint 'NScurl::md5 -memory ($R0:"${S1}", $R1) = "$0"'
+
+	System::Free $R0
+
+	; NScurl::sha1
+	NScurl::sha1 -file $EXEPATH
+	Pop $0
+	DetailPrint 'NScurl::sha1 -file "$EXEFILE" = "$0"'
+
+	; NScurl::sha256
+	NScurl::sha256 -file $EXEPATH
+	Pop $0
+	DetailPrint 'NScurl::sha256 -file "$EXEFILE" = "$0"'
+
+	!undef S1
+SectionEnd
+
+
+Section "Un/Escape"
+	;SectionIn ${INSTTYPE_CUSTOM}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	StrCpy $R0 "aaa bbb ccc=ddd&eee"
+	DetailPrint "Original: $R0"
+
+	NScurl::escape $R0
+	Pop $1
+	DetailPrint "Escaped: $1"
+
+	NScurl::unescape $1
+	Pop $0
+	DetailPrint "Unescaped: $0"
+
+SectionEnd
+
+
+Section About
+	SectionIn ${INSTTYPE_MOST}
+	DetailPrint '=====[ ${__SECTION__} ]==============================='
+
+	NScurl::query "NScurl/@PLUGINVERSION@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "    @PLUGINAUTHOR@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "    @PLUGINWEB@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "curl/@CURLVERSION@ @CURLSSLVERSION@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "    Protocols: @CURLPROTOCOLS@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "    Features: @CURLFEATURES@"
+	Pop $0
+	DetailPrint '$0'
+
+	NScurl::query "Agent: @USERAGENT@"
+	Pop $0
+	DetailPrint '$0'
+SectionEnd
+
+
+SectionGroupEnd		; Extra
+
+
+Section -Final
+    DetailPrint '[ TESTS ] Total: $g_testCount, Failed: $g_testFails'
+SectionEnd
