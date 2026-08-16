@@ -77,7 +77,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
     Written by [Afrow UK](https://www.afrowsoft.co.uk/)
     
-  * [NsisFile plug-in](https://nsis.sourceforge.net/NsisFile_plug-in) **[v.1.0](https://wiz0u.free.fr/prog/nsisFile/latest.php)**:
+  * [NsisFile plug-in](https://nsis.sourceforge.net/NsisFile_plug-in) **[v.1.0](http://wiz0u.free.fr/prog/nsisFile/latest.php)**:
 
     Written by [Wizou](https://nsis.sourceforge.net/User:Wizou)
 

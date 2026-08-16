@@ -1,0 +1,49 @@
+on:
+  push:
+    branches: ['build/ci']
+
+jobs:
+  build:
+    runs-on: [Windows, x64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install NSIS
+        id: nsis
+        uses: negrutiu/nsis-install@v2
+        with:
+          distro: official
+
+      - name: Show NSIS info
+        run: |
+          echo "NSIS dir: ${{ steps.nsis.outputs.instdir }}"
+          echo "NSIS version: ${{ steps.nsis.outputs.version }}"
+          echo "NSIS arch: ${{ steps.nsis.outputs.arch }}"
+
+      - name: Install `NScurl` from GitHub
+        uses: negrutiu/nsis-install-plugin@v1
+        with:
+          github-owner: negrutiu
+          github-repo: nsis-nscurl
+          github-asset-regex: NScurl\.zip
+
+      - name: Install `AccessControl` from web
+        uses: negrutiu/nsis-install-plugin@v1
+        with:
+          plugin-name: AccessControl
+          url: https://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip
+
+      - name: Install `NsArray` from web
+        uses: negrutiu/nsis-install-plugin@v1
+        with:
+          url: https://nsis.sourceforge.io/mediawiki/images/9/97/NsArray.zip
+
+      - name: Install `nsisFile` from web
+        uses: negrutiu/nsis-install-plugin@v1
+        with:
+          plugin-name: nsisFile
+          url: http://wiz0u.free.fr/prog/nsisFile/latest.php
+
+      - name: Build installer
+        run: makensis RS3DInstaller.nsi
