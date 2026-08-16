@@ -2,7 +2,7 @@ on:
   push:
     branches: [master]
     tags:
-      - '\d+\.\d+\.\d+' # Triggers on tags like v1.0.0
+      - '*' # Triggers on tags like v1.0.0
   pull_request:
     branches: all
 
