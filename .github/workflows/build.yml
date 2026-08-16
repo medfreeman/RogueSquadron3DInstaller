@@ -49,7 +49,7 @@ jobs:
       - name: Install `Advanced Uninstall Log` nsis header from web
         run: |
           Invoke-WebRequest -Uri "https://nsis.sourceforge.io/mediawiki/images/1/12/Advunlog.zip" -OutFile "$env:RUNNER_TEMP\Advunlog.zip"
-          7z x "$env:RUNNER_TEMP\Advunlog.zip" -o "$env:RUNNER_TEMP\Advunlog" -y
+          Expand-Archive -Path "$env:RUNNER_TEMP\Advunlog.zip" -DestinationPath "$env:RUNNER_TEMP\Advunlog" -Force
           Copy-Item -Path "$env:RUNNER_TEMP\Advunlog\Include\AdvUninstLog.nsh" -Destination "${{ steps.nsis.outputs.instdir }}\Include" -Force
 
       - name: Build installer
