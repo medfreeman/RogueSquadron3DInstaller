@@ -57,14 +57,14 @@ jobs:
           Copy-Item -Path "$env:RUNNER_TEMP\Advunlog\Include\AdvUninstLog.nsh" -Destination "${{ steps.nsis.outputs.instdir }}\Include" -Force
 
       - name: Build installer
-        run: makensis /DAPP_VERSION=${{ github.ref }} RS3DInstaller.nsi
+        run: makensis /DAPP_VERSION=${{ github.ref_name }} RS3DInstaller.nsi
       
       - name: Upload artifact
         if: github.ref_type == 'tag'
         uses: actions/upload-artifact@v4
         with:
           name: RS3DInstaller # Unique identifier for the artifact
-          path: "RS3DInstaller-${{ github.ref }}.exe"
+          path: "RS3DInstaller-${{ github.ref_name }}.exe"
 
   release:
     runs-on: windows-latest
@@ -81,4 +81,4 @@ jobs:
       - name: Upload installer artifact
         uses: softprops/action-gh-release@v3
         with:
-          files: "RS3DInstaller-${{ github.ref }}.exe"
+          files: "RS3DInstaller-${{ github.ref_name }}.exe"
