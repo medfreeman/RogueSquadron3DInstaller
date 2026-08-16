@@ -37,6 +37,7 @@ jobs:
       - name: Install `NsArray` from web
         uses: negrutiu/nsis-install-plugin@v1
         with:
+          plugin-name: NsArray
           url: https://nsis.sourceforge.io/mediawiki/images/9/97/NsArray.zip
 
       - name: Install `nsisFile` from web
@@ -44,6 +45,12 @@ jobs:
         with:
           plugin-name: nsisFile
           url: http://wiz0u.free.fr/prog/nsisFile/latest.php
+
+      - name: Install `Advanced Uninstall Log` nsis header from web
+        uses: negrutiu/nsis-install-plugin@v1
+        with:
+          plugin-name: AdvUninstLog
+          url: https://nsis.sourceforge.io/mediawiki/images/1/12/Advunlog.zip
 
       - name: Build installer
         run: makensis RS3DInstaller.nsi
