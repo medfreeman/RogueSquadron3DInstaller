@@ -1,6 +1,10 @@
 on:
   push:
-    branches: ['build/ci']
+    branches: [master]
+    tags:
+      - '\d+\.\d+\.\d+' # Triggers on tags like v1.0.0
+  pull_request:
+    branches: all
 
 jobs:
   build:
@@ -54,3 +58,27 @@ jobs:
 
       - name: Build installer
         run: makensis RS3DInstaller.nsi
+      
+      - name: Upload artifact
+        if: github.ref_type == 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RS3DInstaller # Unique identifier for the artifact
+          path: "RS3DInstaller-${{ github.ref }}.exe"
+
+  release:
+    runs-on: windows-latest
+    if: github.ref_type == 'tag'
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: RS3DInstaller # Must match the upload name
+
+      - name: Upload installer artifact
+        uses: softprops/action-gh-release@v3
+        with:
+          files: "RS3DInstaller-${{ github.ref }}.exe"
