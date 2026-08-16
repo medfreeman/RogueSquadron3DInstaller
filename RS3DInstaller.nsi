@@ -13,7 +13,9 @@
   ;The name of the installer
   !define APP_NAME "Rogue Squadron 3D"
   ;The version of the installer
-  !define APP_VERSION "0.97"
+  !ifndef APP_VERSION
+    !define APP_VERSION "tmp" ; Default fallback
+  !endif
   ;The name of the publisher
   !define APP_PUBLISHER "LucasArts, Factor 5"
   ;Registry path

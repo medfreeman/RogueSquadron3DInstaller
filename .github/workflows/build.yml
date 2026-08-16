@@ -57,7 +57,7 @@ jobs:
           Copy-Item -Path "$env:RUNNER_TEMP\Advunlog\Include\AdvUninstLog.nsh" -Destination "${{ steps.nsis.outputs.instdir }}\Include" -Force
 
       - name: Build installer
-        run: makensis RS3DInstaller.nsi
+        run: makensis /DAPP_VERSION=${{ github.ref }} RS3DInstaller.nsi
       
       - name: Upload artifact
         if: github.ref_type == 'tag'
