@@ -104,7 +104,7 @@ Since it needs a few compatibility fixes and additions, i feel it is simpler to 
 
 ## Installation
 
-- Download the installer [RS3DInstaller-0.97.exe](https://github.com/medfreeman/RogueSquadron3DInstaller/raw/master/RS3DInstaller-0.97.exe)
+- Download the latest installer from [Releases](https://github.com/medfreeman/RogueSquadron3DInstaller/releases)
 - Insert original cdrom
 - Run the new installer
 - Play the game !
