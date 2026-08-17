@@ -2,7 +2,7 @@ on:
   push:
     branches: [master]
     tags:
-      - '*' # Triggers on tags like v1.0.0
+      - '\d+\.\d+\.\d+' # Triggers on tags like 1.0.0
   pull_request:
     branches: all
 
@@ -67,12 +67,31 @@ jobs:
           path: "RS3DInstaller-${{ github.ref_name }}.exe"
 
   release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: github.ref_type == 'tag'
     needs: build
     permissions:
       contents: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install mq
+        uses: harehare/setup-mq@v1
+
+      - name: Extract Changelog for this version
+        id: extract_changelog
+        run: |
+          CHANGELOG_SECTION=$(mq -A 'section::section(., "${{ github.ref_name }}", true)' ./CHANGELOG.md)
+          
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_SECTION" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create current_release.md
+        run: |
+          echo "${{ steps.extract_changelog.outputs.changelog }}" > current_release.md
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -81,4 +100,5 @@ jobs:
       - name: Upload installer artifact
         uses: softprops/action-gh-release@v3
         with:
+          body_path: current_release.md
           files: "RS3DInstaller-${{ github.ref_name }}.exe"

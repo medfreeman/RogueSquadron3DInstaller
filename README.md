@@ -21,7 +21,7 @@ Made with [nsis](https://nsis.sourceforge.io/) 3.12
 
 ## Changelog
 
-See [changelog.txt](changelog.txt)
+See [CHANGELOG.md](CHANGELOG.md)
 
 ## Goal
 
